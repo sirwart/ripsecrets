@@ -28,6 +28,10 @@ This command will fail if `secrets` detects any secrets in the files modified by
 secrets --install-pre-commit
 ```
 
+## Installation
+
+You can download a prebuilt binary for the latest release from the [releases](https://github.com/sirwart/secrets/releases) page.
+
 ## Ignoring secrets
 
 `secrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also it also supports a `[secrets]` section that allows ignoring individual secrets.
