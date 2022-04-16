@@ -1,0 +1,5 @@
+sk_live_ReTllpYQYfIZu2Jnf2lAPFjD // pragma: allowlist secret
+secret = "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"
+-----BEGIN PRIVATE KEY-----this is not a private key-----END PRIVATE KEY-----
+CLIENT_SECRET = settings.GITHUB_API_SECRET
+ACCESS_TOKEN_URL = ASANA_TOKEN_EXCHANGE_URL
