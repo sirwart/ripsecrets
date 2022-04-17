@@ -1,6 +1,7 @@
 ## 0.1.2 (2022-04-17)
 
 - More targeted AWS regex
+- Add --help and --version subcommands
 
 ## 0.1.1 (2022-04-16)
 
