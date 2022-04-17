@@ -1,3 +1,7 @@
+## 0.1.2 (2022-04-17)
+
+- More targeted AWS regex
+
 ## 0.1.1 (2022-04-16)
 
 - Fix crash when running with no arguments
