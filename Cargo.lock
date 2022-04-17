@@ -389,7 +389,7 @@ dependencies = [
 
 [[package]]
 name = "secrets"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "grep",
  "ignore",

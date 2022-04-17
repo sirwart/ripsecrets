@@ -14,18 +14,30 @@
 
 ## Usage
 
-By default running `secrets` will recursively search source files in your current directory for secrets. For every secret it finds it will print out the file, line number, and the secret that was found. If it finds any secrets it will exit with a non-zero status code.
-
-You can optionally pass a list of files and directories to search as arguments. This most commonly used to search files that are about to be committed to source control for accidentically included secrets. For example, to use `secrets` as a git pre-commit hook you can add the following command to your `pre-commit` script:
+By default running `secrets` will recursively search source files in your current directory for secrets.
 
 ```
-secrets `git diff --cached --name-only --diff-filter=ACM`
+$ secrets
+```
+
+For every secret it finds it will print out the file, line number, and the secret that was found. If it finds any secrets it will exit with a non-zero status code.
+
+You can optionally pass a list of files and directories to search as arguments.
+
+```
+$ secrets file1 file2 dir1
+```
+
+This most commonly used to search files that are about to be committed to source control for accidentically included secrets. For example, to use `secrets` as a git pre-commit hook you can add the following command to your `pre-commit` script:
+
+```
+$ secrets `git diff --cached --name-only --diff-filter=ACM`
 ```
 
 This command will fail if `secrets` detects any secrets in the files modified by the commit. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
 
 ```
-secrets --install-pre-commit
+$ secrets --install-pre-commit
 ```
 
 ## Installation
@@ -52,15 +64,13 @@ test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 
 ## Performance
 
-There were a few core decisions made in the design of `secrets` to optimize performance:
+The slowest part of secret scanning is looking for potential secrets in a large number of files. To do this quickly `secrets` does a couple of things:
 
-1. Written in a compiled language. Interpreted programs have longer startup time than compiled ones, which becomes a high percentage of total runtime for commands that only run for a fraction of a second.
+1. All the secret patterns are compiled into a single regex, so each file only needs to be processed once.
 
-2. Uses the fastest regex engine. The biggest bottleneck for secret scanning is looking for secret-like strings using a regex in a large number of files. This is a job that the excellent [ripgrep](https://github.com/BurntSushi/ripgrep) is specifically optimized to be the best at, so `secrets` was designed around using the `ripgrep` engine for parallel file walking and regex searching, down to being written in rust.
+2. This regex is fed to [ripgrep](https://github.com/BurntSushi/ripgrep), which is specially optimized to running a regex against a large number of files quickly.
 
-3. A single pass on files. Other scanners use N different regexes for N different secret patterns that need to be checked, which means you have to run N passes on every file you're checking. This is very flexible and modular, but comes at a large cost to performance. `secrets` compiles all patterns as a single regex to get the most performance out of the underlying regex engine.
-
-To compare real world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
+Additionally `secrets` is written in Rust, which means there's no interpreter startup time. To compare real world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
 
 | tool           | avg. runtime | vs. baseline |
 | -------------- | ------------ | ------------ |
@@ -68,7 +78,7 @@ To compare real world performance, here's the runtime of a few different scannin
 | trufflehog     | 31.2s        | 95x          |
 | detect-secrets | 73.5s        | 226x         |
 
-Most of the time your pre-commit will be running on a small number of files, so that runtime is not typical, but when working with large commits that touch a lot of files the runtime becomes very noticeable.
+Most of the time your pre-commit will be running on a small number of files, so that runtime is not typical, but when working with large commits that touch a lot of files the runtime can become noticeable.
 
 ## Alternative tools
 

@@ -127,7 +127,7 @@ fn main() {
     let args: Vec<&str> = args.iter().map(|x| &**x).collect();
     let mut path = ".";
 
-    if args[1] == "--install-pre-commit" {
+    if args.len() > 1 && args[1] == "--install-pre-commit" {
         if args.len() > 2 {
             eprintln!("Usage: secrets --install-pre-commit");
             process::exit(1);
