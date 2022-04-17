@@ -16,7 +16,7 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "(?:r|s)k_live_[0-9a-zA-Z]{24}",            // stripe
         "(?:AC[a-z0-9]{32}|SK[a-z0-9]{32})",        // twilio
         "(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}", // github
-        "eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*?", // jwt
+        "(?:^|\\W)eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*?", // jwt
         "xox(?:a|b|p|o|s|r)-(?:\\d+-)+[a-z0-9]+",   // slack
         "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+", // slack webhooks
         "//.+/:_authToken=[A-Zaz0-9-_]+", // legacy npm

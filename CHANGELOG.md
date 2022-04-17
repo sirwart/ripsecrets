@@ -1,3 +1,7 @@
+## 0.1.3 (Not yet released)
+
+- More targeted JWT regex
+
 ## 0.1.2 (2022-04-17)
 
 - More targeted AWS regex
