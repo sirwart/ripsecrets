@@ -44,6 +44,24 @@ $ secrets --install-pre-commit
 
 You can download a prebuilt binary for the latest release from the [releases](https://github.com/sirwart/secrets/releases) page.
 
+### Using pre-commit
+
+`secrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
+the following configuration.
+
+Note that this may require having Cargo and a Rust compiler already installed.
+See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more
+information.
+
+```yaml
+repos:
+-   repo: https://github.com/sirwart/secrets.git
+    # Set a specific version or branch instead of the default branch (main)
+    # rev: v0.1.2
+    hooks:
+    -   id: secrets
+```
+
 ## Ignoring secrets
 
 `secrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also it also supports a `[secrets]` section that allows ignoring individual secrets.

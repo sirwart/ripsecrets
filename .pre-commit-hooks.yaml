@@ -1,0 +1,9 @@
+-   id: secrets
+    name: secrets
+    description: 'Prevent committing secret keys into your source code'
+    entry: secrets
+    language: rust
+    'types': [text]
+    args: []
+    require_serial: false
+    minimum_pre_commit_version: '0'
