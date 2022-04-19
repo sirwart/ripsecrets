@@ -21,7 +21,6 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+", // slack webhooks
         "//.+/:_authToken=[A-Zaz0-9-_]+", // legacy npm
         "npm_[A-Za-z0-9]{36}",            // modern npm tokens
-        "(?:ABIA|ACCA|AKIA)[0-9A-Z]{16}", // aws
         "AccountKey=[a-zA-Z0-9+/=]{88}",  // azure storage
         "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}", // sendgrid
         "[0-9a-z]{32}-us[0-9]{1,2}",      // mailchimp
