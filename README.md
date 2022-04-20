@@ -44,6 +44,12 @@ $ secrets --install-pre-commit
 
 You can download a prebuilt binary for the latest release from the [releases](https://github.com/sirwart/secrets/releases) page.
 
+Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
+
+```
+cargo install --git https://github.com/sirwart/secrets --branch main
+```
+
 ### Using pre-commit
 
 `secrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
