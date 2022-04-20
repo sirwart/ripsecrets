@@ -5,5 +5,5 @@
     language: rust
     'types': [text]
     args: []
-    require_serial: false
+    require_serial: true
     minimum_pre_commit_version: '0'
