@@ -102,10 +102,6 @@ Most of the time your pre-commit will be running on a small number of files, so 
 
 Even if `secrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alterative tools worth considering:
 
-## [detect-secrets](https://github.com/Yelp/detect-secrets)
-
-`detect-secrets` was the inspiration for `secrets`. `secrets` was originally conceived as a much faster, more focused version of `detect-secrets` with better random string detection. However, `detect-secrets` still has a lot more features that might be a better fit for your use case.
-
-## [trufflehog](https://github.com/trufflesecurity/trufflehog)
-
-`trufflehog` recently released a version 3, which was a complete re-write from the previous versions and promises better performance and no external dependencies. It's very focused on secret verification, which means fewer false positives but also sending secrets from your source code to external services. It also offers a range of secret scanning services whereas `secrets` is primarily focused on being a good pre-commit hook.
+- [detect-secrets](https://github.com/Yelp/detect-secrets)
+- [trufflehog](https://github.com/trufflesecurity/trufflehog)
+- [gitleaks](https://github.com/zricethezav/gitleaks)
