@@ -56,8 +56,8 @@ information.
 ```yaml
 repos:
 -   repo: https://github.com/sirwart/secrets.git
-    # Set a specific version or branch instead of the default branch (main)
-    # rev: v0.1.2
+    # Set your version, be sure to use the latest and update regularly or use 'main'
+    rev: v0.1.3
     hooks:
     -   id: secrets
 ```
