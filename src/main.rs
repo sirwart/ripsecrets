@@ -1,7 +1,8 @@
-use std::env;
+// use std::env;
+use clap::Parser;
 use std::error::Error;
 use std::fmt;
-use std::process;
+use std::path::PathBuf;
 
 mod find_secrets;
 mod ignore_info;
@@ -28,61 +29,26 @@ impl fmt::Display for UsageError {
     }
 }
 
-fn main_aux(args: &Vec<String>) -> Result<usize, Box<dyn Error>> {
-    let mut match_count: usize = 0;
-    let mut path = ".";
+/// Prevent committing secret keys into your source code
+#[derive(Parser, Debug)]
+#[clap(version, about, name = "secrets")]
+struct Args {
+    /// Install `secrets` as a pre-commit hook automatically in your current git repository
+    #[clap(long = "install-pre-commit")]
+    install_pre_commit: bool,
 
-    if args.len() > 1 && args[1] == "--install-pre-commit" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::PreCommit));
-        }
-        pre_commit::install_pre_commit(path)?;
-    } else if args.len() > 1 && args[1] == "--version" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Version));
-        }
-        println!("secrets {}", env!("CARGO_PKG_VERSION"));
-    } else if args.len() > 1 && args[1] == "--help" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Help));
-        }
-        println!("secrets {}
-
-secrets searches files and directories recursively for secret API keys.
-It's primarily designed to be used as a pre-commit to prevent committing
-secrets into version control.
-
-USAGE:
-    secrets [PATH ...]
-    secrets --install-pre-commit
-    secrets --help
-    secrets --version", env!("CARGO_PKG_VERSION"))
-    } else {
-        let mut additional_paths: &[String] = &[];
-        if args.len() > 1 {
-            path = &args[1];
-            if args.len() > 2 {
-                additional_paths = &args[2..];
-            }
-        }
-        match_count = find_secrets::find_secrets(path, &additional_paths)?;
-    }
-
-    return Ok(match_count);
+    /// Source files to check for secrets.
+    /// Can be files or directories.
+    #[clap(name = "Source files to check", parse(from_os_str), required = true)]
+    paths: Vec<PathBuf>,
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    match main_aux(&args) {
-        Err(err) => {
-            eprintln!("{}", err);
-            process::exit(2);
-        }
-        Ok(match_count) => {
-            if match_count > 0 {
-                process::exit(1);
-            }
-        }
+fn main() -> Result<(), Box<dyn Error>> {
+    let args = Args::parse();
+    if args.install_pre_commit {
+        pre_commit::install_pre_commit(".")?;
+    } else {
+        find_secrets::find_secrets(&args.paths)?;
     }
+    Ok(())
 }

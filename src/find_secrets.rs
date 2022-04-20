@@ -1,5 +1,6 @@
 use std::cmp;
 use std::error::Error;
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 
@@ -19,13 +20,13 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "(?:^|\\W)eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*?", // jwt
         "xox(?:a|b|p|o|s|r)-(?:\\d+-)+[a-z0-9]+",   // slack
         "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+", // slack webhooks
-        "//.+/:_authToken=[A-Zaz0-9-_]+", // legacy npm
-        "npm_[A-Za-z0-9]{36}",            // modern npm tokens
-        "AccountKey=[a-zA-Z0-9+/=]{88}",  // azure storage
+        "//.+/:_authToken=[A-Zaz0-9-_]+",             // legacy npm
+        "npm_[A-Za-z0-9]{36}",                        // modern npm tokens
+        "AccountKey=[a-zA-Z0-9+/=]{88}",              // azure storage
         "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}", // sendgrid
-        "[0-9a-z]{32}-us[0-9]{1,2}",      // mailchimp
-        r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#, // square
-        "AIzaSy[A-Za-z0-9-_]{33}",        // gcp api key
+        "[0-9a-z]{32}-us[0-9]{1,2}",                  // mailchimp
+        r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#,             // square
+        "AIzaSy[A-Za-z0-9-_]{33}",                    // gcp api key
         // Private keys
         "-----BEGIN DSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
         "-----BEGIN EC PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
@@ -51,7 +52,7 @@ fn combined_regex(regexes: &[&str]) -> String {
     combined
 }
 
-pub fn find_secrets(path: &str, additional_paths: &[String]) -> Result<usize, Box<dyn Error>> {
+pub fn find_secrets(paths: &[PathBuf]) -> Result<usize, Box<dyn Error>> {
     let predefined = predefined_secret_regexes();
     let combined = combined_regex(&predefined);
 
@@ -64,9 +65,12 @@ pub fn find_secrets(path: &str, additional_paths: &[String]) -> Result<usize, Bo
 
     let bufwtr = Arc::new(BufferWriter::stdout(ColorChoice::Never));
 
-    let mut walk_builder = WalkBuilder::new(path);
-    for addtional_path in additional_paths {
-        walk_builder.add(addtional_path);
+    // Don't love this, but it works
+    let mut walk_builder = WalkBuilder::new(&paths[0]);
+    if paths.len() > 1 {
+        for path in &paths[1..paths.len()] {
+            walk_builder.add(path);
+        }
     }
     if ignore_info.ignore_file_path.is_some() {
         walk_builder.add_ignore(ignore_info.ignore_file_path.unwrap());
@@ -124,7 +128,7 @@ mod tests {
 
     #[test]
     fn no_false_positives() {
-        let res = find_secrets("test/none", &[]);
+        let res = find_secrets(&[PathBuf::from("test/none")]);
         assert_eq!(res.unwrap(), 0)
     }
 
@@ -133,7 +137,7 @@ mod tests {
         for maybe_entry in fs::read_dir("test/one_per_line").unwrap() {
             let entry = maybe_entry.unwrap();
             let contents = fs::read_to_string(entry.path()).unwrap();
-            let res = find_secrets(entry.path().to_str().unwrap(), &[]);
+            let res = find_secrets(&[entry.path()]);
             assert_eq!(
                 res.unwrap(),
                 contents.matches("\n").count(),
@@ -143,7 +147,7 @@ mod tests {
         }
         for maybe_entry in fs::read_dir("test/one").unwrap() {
             let entry = maybe_entry.unwrap();
-            let res = find_secrets(entry.path().to_str().unwrap(), &[]);
+            let res = find_secrets(&[entry.path()]);
             assert_eq!(res.unwrap(), 1, "{:?}", entry.file_name());
         }
     }
