@@ -1,7 +1,7 @@
-use std::env;
+use clap::{Args, Parser, Subcommand};
 use std::error::Error;
-use std::ffi::OsString;
 use std::fmt;
+use std::path::Path;
 use std::path::PathBuf;
 use std::process;
 
@@ -30,80 +30,70 @@ impl fmt::Display for UsageError {
     }
 }
 
-fn main_aux(args: &Vec<OsString>) -> Result<usize, Box<dyn Error>> {
-    let mut match_count: usize = 0;
-
-    if args.len() > 1 && args[1] == "--install-pre-commit" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::PreCommit));
-        }
-        pre_commit::install_pre_commit(&PathBuf::from("."))?;
-    } else if args.len() > 1 && args[1] == "--version" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Version));
-        }
-        println!("secrets {}", env!("CARGO_PKG_VERSION"));
-    } else if args.len() > 1 && args[1] == "--help" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Help));
-        }
-        println!("secrets {}
-
-secrets searches files and directories recursively for secret API keys.
+/// Prevent committing secret keys into your source code
+#[derive(Parser)]
+#[clap(
+    version,
+    about,
+    name = "secrets",
+    long_about = "secrets searches files and directories recursively for secret API keys.
 It's primarily designed to be used as a pre-commit to prevent committing
-secrets into version control.
-
-USAGE:
-    secrets [--strict-ignore] [PATH ...]
-    secrets --install-pre-commit
-    secrets --help
-    secrets --version
-
-OPTIONS:
-    --install-pre-commit
-        Installs secrets as part of your git pre-commit hook, creating one if
-        one doesn't already exist.
-
-    --strict-ignore
-        If you pass a path as an argument that's ignored by .secretsignore it
-        will be scanned by default. --strict-ignore will override this
-        behavior and not search the paths passed as arguments that are excluded
-        by the .secretsignore file. This is useful when invoking secrets as a
-        pre-commit.", env!("CARGO_PKG_VERSION"))
-    } else {
-        let mut strict_ignore = false;
-        let mut paths = Vec::new();
-        if args.len() > 1 {
-            let mut start_idx = 1;
-            if args[1] == "--strict-ignore" {
-                strict_ignore = true;
-                start_idx = 2;
-            }
-            for path in &args[start_idx..] {
-                paths.push(PathBuf::from(path));
-            }
-        }
-        if paths.len() == 0 {
-            paths.push(PathBuf::from("."));
-        }
-        match_count = find_secrets::find_secrets(&paths, strict_ignore)?;
-    }
-
-    return Ok(match_count);
+secrets into version control."
+)]
+struct Cli {
+    #[clap(subcommand)]
+    command: Commands,
 }
 
-fn main() {
-    let args: Vec<OsString> = env::args_os().collect();
+#[derive(Subcommand)]
+enum Commands {
+    /// Install `secrets` as a pre-commit hook automatically in your current git repository
+    #[clap(alias = "install-pre-commit")]
+    Precommit {},
 
-    match main_aux(&args) {
-        Err(err) => {
-            eprintln!("{}", err);
-            process::exit(2);
-        }
-        Ok(match_count) => {
-            if match_count > 0 {
-                process::exit(1);
+    /// Check files or directories for secrets
+    #[clap(alias = "check")]
+    Check(CheckRequest),
+}
+
+#[derive(Args)]
+struct CheckRequest {
+    /// If you pass a path as an argument that's ignored by .secretsignore it
+    /// will be scanned by default. --strict-ignore will override this
+    /// behavior and not search the paths passed as arguments that are excluded
+    /// by the .secretsignore file. This is useful when invoking secrets as a
+    /// pre-commit.
+    #[clap(long = "strict-ignore")]
+    strict_ignore: bool,
+
+    /// Source files to check for secrets. Can be files or directories.
+    #[clap(name = "Source files to check", parse(from_os_str))]
+    paths: Vec<PathBuf>,
+}
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let cli = Cli::parse();
+    match &cli.command {
+        Commands::Precommit {} => pre_commit::install_pre_commit(Path::new("."))?,
+        Commands::Check(check_request) => {
+            // I don't love this, but it's the best way I can figure to get it to
+            // check "." if given no paths (an empty vec)...
+            if check_request.paths.is_empty() {
+                match find_secrets::find_secrets(
+                    &[PathBuf::from(".")],
+                    check_request.strict_ignore,
+                )? {
+                    0 => process::exit(2),
+                    _ => process::exit(1),
+                }
+            } else {
+                match find_secrets::find_secrets(&check_request.paths, check_request.strict_ignore)?
+                {
+                    0 => process::exit(2),
+                    _ => process::exit(1),
+                }
             }
         }
-    }
+    };
+    Ok(())
 }
