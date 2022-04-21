@@ -1,5 +1,12 @@
 ## 0.1.3 (Not yet released)
 
+- Added a new --strict-ignore option for pre-commit usage. When a pre-commit is
+  invoked it includes a list of filenames. By default secrets will search
+  referenced files regardless of the contents of .gitignore or .secretsignore.
+  However in a pre-commit context this will cause files explicitly ignored by
+  .secretsignore to be searched and the pre-commit to potentially fail. Using
+  the --strict-ignore flag will cause the .secretsignore file to be respected
+  even if the file is passed as an argument.
 - More targeted JWT regex
 - Lower minimum token length for random string detection
 - Don't explicitly flag AWS access key IDs since they're not secrets

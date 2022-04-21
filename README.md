@@ -28,17 +28,19 @@ You can optionally pass a list of files and directories to search as arguments.
 $ secrets file1 file2 dir1
 ```
 
-This most commonly used to search files that are about to be committed to source control for accidentically included secrets. For example, to use `secrets` as a git pre-commit hook you can add the following command to your `pre-commit` script:
-
-```
-$ secrets `git diff --cached --name-only --diff-filter=ACM`
-```
-
-This command will fail if `secrets` detects any secrets in the files modified by the commit. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
+This most commonly used to search files that are about to be committed to source control for accidentically included secrets. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
 
 ```
 $ secrets --install-pre-commit
 ```
+
+If you would like to install `secrets` manually you can add the following command to yout `pre-commit` script:
+
+```
+$ secrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
+```
+
+Passing `--strict-ignore` ensures that your `.secretsignore` file is respected when running secrets as a pre-commit.
 
 ## Installation
 

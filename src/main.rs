@@ -1,6 +1,8 @@
 use std::env;
 use std::error::Error;
+use std::ffi::OsString;
 use std::fmt;
+use std::path::PathBuf;
 use std::process;
 
 mod find_secrets;
@@ -28,15 +30,14 @@ impl fmt::Display for UsageError {
     }
 }
 
-fn main_aux(args: &Vec<String>) -> Result<usize, Box<dyn Error>> {
+fn main_aux(args: &Vec<OsString>) -> Result<usize, Box<dyn Error>> {
     let mut match_count: usize = 0;
-    let mut path = ".";
 
     if args.len() > 1 && args[1] == "--install-pre-commit" {
         if args.len() > 2 {
             return Err(Box::new(UsageError::PreCommit));
         }
-        pre_commit::install_pre_commit(path)?;
+        pre_commit::install_pre_commit(&PathBuf::from("."))?;
     } else if args.len() > 1 && args[1] == "--version" {
         if args.len() > 2 {
             return Err(Box::new(UsageError::Version));
@@ -53,26 +54,46 @@ It's primarily designed to be used as a pre-commit to prevent committing
 secrets into version control.
 
 USAGE:
-    secrets [PATH ...]
+    secrets [--strict-ignore] [PATH ...]
     secrets --install-pre-commit
     secrets --help
-    secrets --version", env!("CARGO_PKG_VERSION"))
+    secrets --version
+
+OPTIONS:
+    --install-pre-commit
+        Installs secrets as part of your git pre-commit hook, creating one if
+        one doesn't already exist.
+
+    --strict-ignore
+        If you pass a path as an argument that's ignored by .secretsignore it
+        will be scanned by default. --strict-ignore will override this
+        behavior and not search the paths passed as arguments that are excluded
+        by the .secretsignore file. This is useful when invoking secrets as a
+        pre-commit.", env!("CARGO_PKG_VERSION"))
     } else {
-        let mut additional_paths: &[String] = &[];
+        let mut strict_ignore = false;
+        let mut paths = Vec::new();
         if args.len() > 1 {
-            path = &args[1];
-            if args.len() > 2 {
-                additional_paths = &args[2..];
+            let mut start_idx = 1;
+            if args[1] == "--strict-ignore" {
+                strict_ignore = true;
+                start_idx = 2;
+            }
+            for path in &args[start_idx..] {
+                paths.push(PathBuf::from(path));
             }
         }
-        match_count = find_secrets::find_secrets(path, &additional_paths)?;
+        if paths.len() == 0 {
+            paths.push(PathBuf::from("."));
+        }
+        match_count = find_secrets::find_secrets(&paths, strict_ignore)?;
     }
 
     return Ok(match_count);
 }
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let args: Vec<OsString> = env::args_os().collect();
 
     match main_aux(&args) {
         Err(err) => {

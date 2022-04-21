@@ -4,6 +4,6 @@
     entry: secrets
     language: rust
     'types': [text]
-    args: []
+    args: [--strict-ignore]
     require_serial: true
     minimum_pre_commit_version: '0'

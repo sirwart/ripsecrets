@@ -25,9 +25,9 @@ impl fmt::Display for PreCommitError {
     }
 }
 
-const PRE_COMMIT: &[u8] = b"secrets `git diff --cached --name-only --diff-filter=ACM`\n";
+const PRE_COMMIT: &[u8] = b"secrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`\n";
 
-pub fn install_pre_commit(repo_root: &str) -> Result<(), Box<dyn Error>> {
+pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
     let git_root = Path::new(repo_root).join(".git");
     if !git_root.exists() {
         return Err(Box::new(PreCommitError::GitDirectoryNotFound));
@@ -48,7 +48,7 @@ pub fn install_pre_commit(repo_root: &str) -> Result<(), Box<dyn Error>> {
         if !pre_commit_fname.exists() {
             write_pre_commit_file(&pre_commit_fname)?;
         } else {
-            let existing = fs::read(pre_commit_fname.clone())?;
+            let existing = fs::read(&pre_commit_fname)?;
             match existing
                 .windows(PRE_COMMIT.len())
                 .position(|window| window == PRE_COMMIT)

@@ -5,10 +5,13 @@ use std::fs;
 use std::io::Write;
 use std::option::Option;
 use std::path::PathBuf;
+
+use ignore::gitignore::Gitignore;
 use tempfile::NamedTempFile;
 
 pub struct IgnoreInfo {
     pub ignore_file_path: Option<PathBuf>,
+    pub ignore_matcher: Option<Gitignore>,
     pub ignore_secrets: HashSet<Vec<u8>>,
 
     _tmp_file: Option<NamedTempFile>,
@@ -29,6 +32,7 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
     secrets_ignore_filename.push(".secretsignore");
 
     let mut maybe_ignore_file_path: Option<PathBuf> = None;
+    let mut maybe_ignore_matcher: Option<Gitignore> = None;
     let mut maybe_tmp_file: Option<NamedTempFile> = None;
     let mut ignore_secrets = HashSet::<Vec<u8>>::new();
 
@@ -42,6 +46,7 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
                 let mut tmp_file = NamedTempFile::new()?;
                 tmp_file.write_all(components[0].as_bytes())?;
                 maybe_ignore_file_path = Some(PathBuf::from(tmp_file.path()));
+                maybe_ignore_matcher = Some(Gitignore::new(tmp_file.path()).0);
                 maybe_tmp_file = Some(tmp_file);
             }
             for secret in components[1].split("\n") {
@@ -58,6 +63,7 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
 
     return Ok(IgnoreInfo {
         ignore_file_path: maybe_ignore_file_path,
+        ignore_matcher: maybe_ignore_matcher,
         ignore_secrets: ignore_secrets,
         _tmp_file: maybe_tmp_file,
     });

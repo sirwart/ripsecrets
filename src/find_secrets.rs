@@ -1,11 +1,14 @@
 use std::cmp;
 use std::error::Error;
+use std::fs;
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 
 use grep::printer;
 use grep::searcher::Searcher;
 use ignore::WalkBuilder;
+use ignore::gitignore::Gitignore;
 use termcolor::{BufferWriter, ColorChoice};
 
 use crate::ignore_info;
@@ -51,7 +54,7 @@ fn combined_regex(regexes: &[&str]) -> String {
     combined
 }
 
-pub fn find_secrets(path: &str, additional_paths: &[String]) -> Result<usize, Box<dyn Error>> {
+pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box<dyn Error>> {
     let predefined = predefined_secret_regexes();
     let combined = combined_regex(&predefined);
 
@@ -64,8 +67,26 @@ pub fn find_secrets(path: &str, additional_paths: &[String]) -> Result<usize, Bo
 
     let bufwtr = Arc::new(BufferWriter::stdout(ColorChoice::Never));
 
-    let mut walk_builder = WalkBuilder::new(path);
-    for addtional_path in additional_paths {
+    let mut to_search = Vec::<PathBuf>::new();
+    if strict_ignore && ignore_info.ignore_matcher.is_some() {
+        let ignore_matcher = ignore_info.ignore_matcher.unwrap();
+        for path in paths {
+            if !is_ignored(&path, &ignore_matcher) {
+                to_search.push(path.clone());
+            }
+        };
+    } else {
+        for path in paths {
+            to_search.push(path.clone());
+        }
+    }
+
+    if to_search.len() == 0 {
+        return Ok(0);
+    }
+
+    let mut walk_builder = WalkBuilder::new(&to_search[0]);
+    for addtional_path in &to_search[1..] {
         walk_builder.add(addtional_path);
     }
     if ignore_info.ignore_file_path.is_some() {
@@ -117,6 +138,24 @@ pub fn find_secrets(path: &str, additional_paths: &[String]) -> Result<usize, Bo
     Ok(match_count.fetch_max(0, Ordering::SeqCst))
 }
 
+fn is_ignored(path: &Path, ignore_matcher: &Gitignore) -> bool {
+    let parent = path.parent();
+    if parent.is_some() {
+        let parent_ignored = is_ignored(&parent.unwrap(), ignore_matcher);
+        if parent_ignored {
+            return true;
+        }
+    }
+    let metadata = fs::metadata(path);
+    if metadata.is_ok() {
+        let is_dir = metadata.unwrap().is_dir();
+        if ignore_matcher.matched(path, is_dir).is_ignore() {
+            return true;
+        }
+    }
+    return false
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -124,7 +163,7 @@ mod tests {
 
     #[test]
     fn no_false_positives() {
-        let res = find_secrets("test/none", &[]);
+        let res = find_secrets(&[PathBuf::from("test/none")], false);
         assert_eq!(res.unwrap(), 0)
     }
 
@@ -133,7 +172,7 @@ mod tests {
         for maybe_entry in fs::read_dir("test/one_per_line").unwrap() {
             let entry = maybe_entry.unwrap();
             let contents = fs::read_to_string(entry.path()).unwrap();
-            let res = find_secrets(entry.path().to_str().unwrap(), &[]);
+            let res = find_secrets(&[entry.path()], false);
             assert_eq!(
                 res.unwrap(),
                 contents.matches("\n").count(),
@@ -143,8 +182,17 @@ mod tests {
         }
         for maybe_entry in fs::read_dir("test/one").unwrap() {
             let entry = maybe_entry.unwrap();
-            let res = find_secrets(entry.path().to_str().unwrap(), &[]);
+            let res = find_secrets(&[entry.path()], false);
             assert_eq!(res.unwrap(), 1, "{:?}", entry.file_name());
         }
+    }
+
+    #[test]
+    fn strict_ignore_works() {
+        let res = find_secrets(&[PathBuf::from("test")], true);
+        assert_eq!(res.unwrap(), 0);
+
+        let res = find_secrets(&[PathBuf::from("test/one_per_line/aws"), PathBuf::from("test/one_per_line/azure")], true);
+        assert_eq!(res.unwrap(), 0);
     }
 }
