@@ -1,0 +1,18 @@
+---
+name: Continuous Integration
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v17
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - run: nix build
+      - run: nix flake check

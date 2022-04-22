@@ -11,6 +11,7 @@
 - Lower minimum token length for random string detection
 - Don't explicitly flag AWS access key IDs since they're not secrets
 - Fix bug with legacy npm token regex
+- [Bug #13] More targeted random string regex
 
 ## 0.1.2 (2022-04-17)
 
