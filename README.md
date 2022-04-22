@@ -34,7 +34,7 @@ This is most commonly used to search files that are about to be committed to sou
 $ ripsecrets --install-pre-commit
 ```
 
-If you would like to install `ripsecrets` manually you can add the following command to yout `pre-commit` script:
+If you would like to install `ripsecrets` manually you can add the following command to your `pre-commit` script:
 
 ```
 $ ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
