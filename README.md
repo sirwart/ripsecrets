@@ -4,19 +4,23 @@
 
 `ripsecrets` is a command-line tool to prevent committing secret keys into your source code. `ripsecrets` has a few features that distinguish it from other secret scanning tools:
 
-1. Focused on pre-commit. It's a lot cheaper to prevent secrets from getting committed in the first place than dealing with the consequences once a secret that has been committed to your repository has been detected.
+## What makes ripsecrets different
 
-2. Extremely fast. Using a secret scanner shouldn't slow down your development workflow, so `ripsecrets` is 95 times faster or more than other tools. Learn more about how it's designed for performance [here](#performance).
+`ripsecrets` has a few features that distinguish it from other secret scanning tools:
 
-3. Always local operation. Many other secret scanners try to verify that the secrets are valid, which is practice means sending strings from your source code to 3rd party services automatically. There's a security versus convenience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
+1. **Focused on pre-commit**. It's a lot cheaper to prevent secrets from getting committed in the first place than dealing with the consequences once a secret that has been committed to your repository has been detected.
 
-4. Low rate of false positives. While local-only tools are always going to have more false positives than one that verifies secrets, `ripsecrets` uses a probability theory based approach in order to more accurately detect keys than other tools.
+2. **Extremely fast**. Using a secret scanner shouldn't slow down your development workflow, so `ripsecrets` is 95 times faster or more than other tools. [Learn more about how it's designed for performance](#performance).
 
-5. Single binary with no dependencies. Installing `ripsecrets` is as easy as copying the binary into your `bin` directory.
+3. **Always local operation**. Many other secret scanners try to verify that the secrets are valid, which is practice means sending strings from your source code to 3rd party services automatically. There's a security versus convenience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
+
+4. **Low rate of false positives**. While local-only tools are always going to have more false positives than one that verifies secrets, `ripsecrets` uses a probability theory based approach in order to detect keys more accurately than other tools.
+
+5. **Single binary with no dependencies**. Installing `ripsecrets` is as easy as copying the binary into your `bin` directory.
 
 ## Usage
 
-By default running `ripsecrets` will recursively search source files in your current directory for secrets.
+By default, running `ripsecrets` will recursively search source files in your current directory for secrets.
 
 ```
 $ ripsecrets
@@ -30,13 +34,17 @@ You can optionally pass a list of files and directories to search as arguments.
 $ ripsecrets file1 file2 dir1
 ```
 
-This is most commonly used to search files that are about to be committed to source control for accidentally included secrets. You can install `ripsecrets` as a pre-commit hook automatically in your current git repository using the following command:
+This is most commonly used to search files that are about to be committed to source control for accidentally included secrets. 
+
+### Installing ripsecrets as a pre-commit hook 
+
+You can install `ripsecrets` as a pre-commit hook _automatically_ in your current git repository using the following command:
 
 ```
 $ ripsecrets --install-pre-commit
 ```
 
-If you would like to install `ripsecrets` manually you can add the following command to your `pre-commit` script:
+If you would like to install `ripsecrets` _manually_, you can add the following command to your `pre-commit` script:
 
 ```
 $ ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
@@ -51,7 +59,7 @@ You can download a prebuilt binary for the latest release from the [releases](ht
 Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
 
 ```
-cargo install --git https://github.com/sirwart/secrets --branch main
+cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
 ### Using pre-commit
@@ -98,7 +106,7 @@ The slowest part of secret scanning is looking for potential secrets in a large 
 
 2. This regex is fed to [ripgrep](https://github.com/BurntSushi/ripgrep), which is specially optimized to running a regex against a large number of files quickly.
 
-Additionally `ripsecrets` is written in Rust, which means there's no interpreter startup time. To compare real world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
+Additionally, `ripsecrets` is written in Rust, which means there's no interpreter startup time. To compare real world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
 
 | tool           | avg. runtime | vs. baseline |
 | -------------- | ------------ | ------------ |
@@ -106,7 +114,7 @@ Additionally `ripsecrets` is written in Rust, which means there's no interpreter
 | trufflehog     | 31.2s        | 95x          |
 | detect-secrets | 73.5s        | 226x         |
 
-Most of the time your pre-commit will be running on a small number of files, so that runtime is not typical, but when working with large commits that touch a lot of files the runtime can become noticeable.
+Most of the time, your pre-commit will be running on a small number of files, so the runtimes above are not typical, but when working with large commits that touch a lot of files the runtime can become noticeable.
 
 ## Alternative tools
 
