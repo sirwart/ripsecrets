@@ -23,7 +23,7 @@ impl std::error::Error for UsageError {}
 impl fmt::Display for UsageError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            UsageError::PreCommit => write!(f, "Usage: secrets --install-pre-commit"),
+            UsageError::PreCommit => write!(f, "Usage: secrets install-pre-commit"),
             UsageError::Version => write!(f, "Usage: secrets --version"),
             UsageError::Help => write!(f, "Usage: secrets --help"),
         }
