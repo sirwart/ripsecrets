@@ -56,6 +56,7 @@ secrets into version control.
 USAGE:
     secrets [--strict-ignore] [PATH ...]
     secrets --install-pre-commit
+    secrets --only-matching
     secrets --help
     secrets --version
 
@@ -69,14 +70,22 @@ OPTIONS:
         will be scanned by default. --strict-ignore will override this
         behavior and not search the paths passed as arguments that are excluded
         by the .secretsignore file. This is useful when invoking secrets as a
-        pre-commit.", env!("CARGO_PKG_VERSION"))
+        pre-commit.
+
+    --only-matching
+        Print only the matched (non-empty) parts of a matching line, with each such
+        part on a separate output line.", env!("CARGO_PKG_VERSION"))
     } else {
         let mut strict_ignore = false;
+        let mut only_matching = false;
         let mut paths = Vec::new();
         if args.len() > 1 {
             let mut start_idx = 1;
             if args[1] == "--strict-ignore" {
                 strict_ignore = true;
+                start_idx = 2;
+            } else if args[1] == "--only-matching" {
+                only_matching = true;
                 start_idx = 2;
             }
             for path in &args[start_idx..] {
@@ -86,7 +95,7 @@ OPTIONS:
         if paths.len() == 0 {
             paths.push(PathBuf::from("."));
         }
-        match_count = find_secrets::find_secrets(&paths, strict_ignore)?;
+        match_count = find_secrets::find_secrets(&paths, strict_ignore, only_matching)?;
     }
 
     return Ok(match_count);

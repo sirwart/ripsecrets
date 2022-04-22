@@ -54,7 +54,7 @@ fn combined_regex(regexes: &[&str]) -> String {
     combined
 }
 
-pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box<dyn Error>> {
+pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool, only_matching: bool) -> Result<usize, Box<dyn Error>> {
     let predefined = predefined_secret_regexes();
     let combined = combined_regex(&predefined);
 
@@ -99,7 +99,9 @@ pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box
 
     parallel_walker.run(move || {
         let bufwtr = bufwtr.clone();
-        let mut printer = printer::Standard::new(bufwtr.buffer());
+        let mut printer_builder = printer::StandardBuilder::new();
+        printer_builder.only_matching(only_matching);
+        let mut printer = printer_builder.build(bufwtr.buffer());
         let matcher = matcher.clone();
         let mut searcher = Searcher::new();
         let match_count_result = match_count_result.clone();
