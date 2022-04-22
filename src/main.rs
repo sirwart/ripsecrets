@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::error::Error;
+// use std::error::Error;
 use std::fmt;
 use std::path::PathBuf;
 use std::process;
@@ -58,7 +58,7 @@ struct Args {
     paths: Vec<PathBuf>,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() {
     let args = Args::parse();
     let paths = if args.paths.is_empty() {
         vec![PathBuf::from(".")]
@@ -68,13 +68,24 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     if args.install_pre_commit {
         for path in paths {
-            pre_commit::install_pre_commit(&path)?;
+            match pre_commit::install_pre_commit(&path) {
+                Ok(()) => (),
+                Err(err) => {
+                    eprintln!("{}", err);
+                    process::exit(2);
+                }
+            }
         }
     } else {
-        match find_secrets::find_secrets(&paths, args.strict_ignore)? {
-            0 => process::exit(0),
-            _ => process::exit(1),
+        match find_secrets::find_secrets(&paths, args.strict_ignore) {
+            Ok(0) => process::exit(0),
+            // We already printed info on discovered secrets,
+            // so just exit
+            Ok(_num_secrets) => process::exit(1),
+            Err(err) => {
+                eprintln!("{}", err);
+                process::exit(2);
+            }
         };
     }
-    Ok(())
 }
