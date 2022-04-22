@@ -14,10 +14,10 @@
 
 ## Usage
 
-By default running `secrets check` will recursively search source files in your current directory for secrets.
+By default running `secrets` will recursively search source files in your current directory for secrets.
 
 ```
-$ secrets check
+$ secrets
 ```
 
 For every secret it finds it will print out the file, line number, and the secret that was found. If it finds any secrets it will exit with a non-zero status code.
@@ -25,7 +25,7 @@ For every secret it finds it will print out the file, line number, and the secre
 You can optionally pass a list of files and directories to search as arguments.
 
 ```
-$ secrets check file1 file2 dir1
+$ secrets file1 file2 dir1
 ```
 
 This most commonly used to search files that are about to be committed to source control for accidentally included secrets. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
@@ -37,7 +37,7 @@ $ secrets install-pre-commit
 If you would like to install `secrets` manually you can add the following command to your `pre-commit` script:
 
 ```
-$ secrets check --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
+$ secrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
 ```
 
 Passing `--strict-ignore` ensures that your `.secretsignore` file is respected when running secrets as a pre-commit.
