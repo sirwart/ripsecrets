@@ -22,9 +22,9 @@ impl std::error::Error for UsageError {}
 impl fmt::Display for UsageError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            UsageError::PreCommit => write!(f, "Usage: secrets --install-pre-commit"),
-            UsageError::Version => write!(f, "Usage: secrets --version"),
-            UsageError::Help => write!(f, "Usage: secrets --help"),
+            UsageError::PreCommit => write!(f, "Usage: ripsecrets --install-pre-commit"),
+            UsageError::Version => write!(f, "Usage: ripsecrets --version"),
+            UsageError::Help => write!(f, "Usage: ripsecrets --help"),
         }
     }
 }
@@ -34,13 +34,13 @@ impl fmt::Display for UsageError {
 #[clap(
     version,
     about,
-    name = "secrets",
-    long_about = "secrets searches files and directories recursively for secret API keys.
+    name = "ripsecrets",
+    long_about = "ripsecrets searches files and directories recursively for secret API keys.
 It's primarily designed to be used as a pre-commit to prevent committing
 secrets into version control."
 )]
 struct Args {
-    /// Install `secrets` as a pre-commit hook automatically in git directory provided. Defaults to
+    /// Install `ripsecrets` as a pre-commit hook automatically in git directory provided. Defaults to
     /// '.'
     #[clap(long = "install-pre-commit")]
     install_pre_commit: bool,
