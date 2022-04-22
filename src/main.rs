@@ -65,6 +65,11 @@ fn main() {
         args.paths
     };
 
+    if args.install_pre_commit && args.strict_ignore {
+        eprintln!("Error: Cannot use both --strict-ignore and --install-pre-commit.\n\t--strict-ignore is always used when automatically installing the pre-commit hook. Use `--install-pre-commit` alone.");
+        process::exit(2);
+    }
+
     if args.install_pre_commit {
         for path in paths {
             match pre_commit::install_pre_commit(&path) {
