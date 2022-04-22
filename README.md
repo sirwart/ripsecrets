@@ -57,7 +57,7 @@ You can download a prebuilt binary for the latest release from the [releases](ht
 Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
 
 ```
-cargo install --git https://github.com/sirwart/secrets --branch main
+cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
 ### Using pre-commit
