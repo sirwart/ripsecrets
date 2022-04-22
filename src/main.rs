@@ -65,7 +65,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     } else {
         args.paths
     };
-    eprintln!("Paths is {:?}", paths);
 
     if args.install_pre_commit {
         for path in paths {
@@ -73,7 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     } else {
         match find_secrets::find_secrets(&paths, args.strict_ignore)? {
-            0 => process::exit(2),
+            0 => process::exit(0),
             _ => process::exit(1),
         };
     }
