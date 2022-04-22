@@ -13,3 +13,4 @@ regex = "1.1"
 termcolor = "1.1.2"
 memoize = "0.3.0"
 tempfile = "3.3.0"
+clap = { version = "3.1.10", features = ["derive"] }

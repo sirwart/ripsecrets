@@ -6,7 +6,7 @@
 
 2. Extremely fast. Using a secret scanner shouldn't slow down your development workflow, so `ripsecrets` is 95 times faster or more than other tools. Learn more about how it's designed for performance [here](#performance).
 
-3. Always local operation. Many other secret scanners try to verify that the secrets are valid, which is practice means sending strings from your source code to 3rd party services automatically. There's a security versus convienience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
+3. Always local operation. Many other secret scanners try to verify that the secrets are valid, which is practice means sending strings from your source code to 3rd party services automatically. There's a security versus convenience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
 
 4. Low rate of false positives. While local-only tools are always going to have more false positives than one that verifies secrets, `ripsecrets` uses a probability theory based approach in order to more accurately detect keys than other tools.
 
@@ -28,13 +28,13 @@ You can optionally pass a list of files and directories to search as arguments.
 $ ripsecrets file1 file2 dir1
 ```
 
-This is most commonly used to search files that are about to be committed to source control for accidentically included secrets. You can install `ripsecrets` as a pre-commit hook automatically in your current git repository using the following command:
+This is most commonly used to search files that are about to be committed to source control for accidentally included secrets. You can install `ripsecrets` as a pre-commit hook automatically in your current git repository using the following command:
 
 ```
 $ ripsecrets --install-pre-commit
 ```
 
-If you would like to install `ripsecrets` manually you can add the following command to yout `pre-commit` script:
+If you would like to install `ripsecrets` manually you can add the following command to your `pre-commit` script:
 
 ```
 $ ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
@@ -100,7 +100,7 @@ Additionally `ripsecrets` is written in Rust, which means there's no interpreter
 
 | tool           | avg. runtime | vs. baseline |
 | -------------- | ------------ | ------------ |
-| secrets        | 0.32s        | 1x           |
+| ripsecrets     | 0.32s        | 1x           |
 | trufflehog     | 31.2s        | 95x          |
 | detect-secrets | 73.5s        | 226x         |
 
@@ -108,7 +108,7 @@ Most of the time your pre-commit will be running on a small number of files, so 
 
 ## Alternative tools
 
-Even if `ripsecrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alterative tools worth considering:
+Even if `ripsecrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alternative tools worth considering:
 
 - [detect-secrets](https://github.com/Yelp/detect-secrets)
 - [trufflehog](https://github.com/trufflesecurity/trufflehog)

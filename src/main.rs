@@ -1,6 +1,4 @@
-use std::env;
-use std::error::Error;
-use std::ffi::OsString;
+use clap::Parser;
 use std::fmt;
 use std::path::PathBuf;
 use std::process;
@@ -30,80 +28,63 @@ impl fmt::Display for UsageError {
     }
 }
 
-fn main_aux(args: &Vec<OsString>) -> Result<usize, Box<dyn Error>> {
-    let mut match_count: usize = 0;
-
-    if args.len() > 1 && args[1] == "--install-pre-commit" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::PreCommit));
-        }
-        pre_commit::install_pre_commit(&PathBuf::from("."))?;
-    } else if args.len() > 1 && args[1] == "--version" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Version));
-        }
-        println!("ripsecrets {}", env!("CARGO_PKG_VERSION"));
-    } else if args.len() > 1 && args[1] == "--help" {
-        if args.len() > 2 {
-            return Err(Box::new(UsageError::Help));
-        }
-        println!("ripsecrets {}
-
-ripsecrets searches files and directories recursively for secret API keys.
+/// Prevent committing secret keys into your source code
+#[derive(Parser, Debug)]
+#[clap(
+    version,
+    about,
+    name = "ripsecrets",
+    long_about = "ripsecrets searches files and directories recursively for secret API keys.
 It's primarily designed to be used as a pre-commit to prevent committing
-secrets into version control.
+secrets into version control."
+)]
+struct Args {
+    /// Install `ripsecrets` as a pre-commit hook automatically in git directory provided. Defaults to
+    /// '.'
+    #[clap(long = "install-pre-commit")]
+    install_pre_commit: bool,
 
-USAGE:
-    ripsecrets [--strict-ignore] [PATH ...]
-    ripsecrets --install-pre-commit
-    ripsecrets --help
-    ripsecrets --version
+    /// If you pass a path as an argument that's ignored by .secretsignore it
+    /// will be scanned by default. --strict-ignore will override this
+    /// behavior and not search the paths passed as arguments that are excluded
+    /// by the .secretsignore file. This is useful when invoking secrets as a
+    /// pre-commit.
+    #[clap(long = "strict-ignore")]
+    strict_ignore: bool,
 
-OPTIONS:
-    --install-pre-commit
-        Installs ripsecrets as part of your git pre-commit hook, creating one
-        if one doesn't already exist.
-
-    --strict-ignore
-        If you pass a path as an argument that's ignored by .secretsignore it
-        will be scanned by default. --strict-ignore will override this
-        behavior and not search the paths passed as arguments that are excluded
-        by the .secretsignore file. This is useful when invoking ripsecrets as
-        a pre-commit.", env!("CARGO_PKG_VERSION"))
-    } else {
-        let mut strict_ignore = false;
-        let mut paths = Vec::new();
-        if args.len() > 1 {
-            let mut start_idx = 1;
-            if args[1] == "--strict-ignore" {
-                strict_ignore = true;
-                start_idx = 2;
-            }
-            for path in &args[start_idx..] {
-                paths.push(PathBuf::from(path));
-            }
-        }
-        if paths.len() == 0 {
-            paths.push(PathBuf::from("."));
-        }
-        match_count = find_secrets::find_secrets(&paths, strict_ignore)?;
-    }
-
-    return Ok(match_count);
+    /// Source files. Can be files or directories. Defaults to '.'
+    #[clap(name = "Source files", parse(from_os_str))]
+    paths: Vec<PathBuf>,
 }
 
 fn main() {
-    let args: Vec<OsString> = env::args_os().collect();
+    let args = Args::parse();
+    let paths = if args.paths.is_empty() {
+        vec![PathBuf::from(".")]
+    } else {
+        args.paths
+    };
 
-    match main_aux(&args) {
-        Err(err) => {
-            eprintln!("{}", err);
-            process::exit(2);
-        }
-        Ok(match_count) => {
-            if match_count > 0 {
-                process::exit(1);
+    if args.install_pre_commit {
+        for path in paths {
+            match pre_commit::install_pre_commit(&path) {
+                Ok(()) => (),
+                Err(err) => {
+                    eprintln!("{}", err);
+                    process::exit(2);
+                }
             }
         }
+    } else {
+        match find_secrets::find_secrets(&paths, args.strict_ignore) {
+            Ok(0) => process::exit(0),
+            // We already printed info on discovered secrets,
+            // so just exit
+            Ok(_num_secrets) => process::exit(1),
+            Err(err) => {
+                eprintln!("{}", err);
+                process::exit(2);
+            }
+        };
     }
 }
