@@ -1,7 +1,7 @@
--   id: secrets
-    name: secrets
+-   id: ripsecrets
+    name: ripsecrets
     description: 'Prevent committing secret keys into your source code'
-    entry: secrets
+    entry: ripsecrets
     language: rust
     'types': [text]
     args: [--strict-ignore]
