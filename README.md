@@ -28,7 +28,7 @@ You can optionally pass a list of files and directories to search as arguments.
 $ secrets file1 file2 dir1
 ```
 
-This most commonly used to search files that are about to be committed to source control for accidentically included secrets. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
+This is most commonly used to search files that are about to be committed to source control for accidentically included secrets. You can install `secrets` as a pre-commit hook automatically in your current git repository using the following command:
 
 ```
 $ secrets --install-pre-commit
@@ -72,7 +72,7 @@ repos:
 
 ## Ignoring secrets
 
-`secrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also it also supports a `[secrets]` section that allows ignoring individual secrets.
+`secrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also supports a `[secrets]` section that allows ignoring individual secrets.
 
 ```
 test/*
