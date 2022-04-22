@@ -373,6 +373,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "ripsecrets"
+version = "0.1.3"
+dependencies = [
+ "grep",
+ "ignore",
+ "memoize",
+ "num_cpus",
+ "regex",
+ "tempfile",
+ "termcolor",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -385,19 +398,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
 dependencies = [
  "winapi-util",
-]
-
-[[package]]
-name = "secrets"
-version = "0.1.2"
-dependencies = [
- "grep",
- "ignore",
- "memoize",
- "num_cpus",
- "regex",
- "tempfile",
- "termcolor",
 ]
 
 [[package]]

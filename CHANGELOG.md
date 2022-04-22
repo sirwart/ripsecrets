@@ -1,5 +1,7 @@
 ## 0.1.3 (Not yet released)
 
+- Renamed from `secrets` to `ripsecrets` to avoid name collisions with other
+  projects.
 - Added a new --strict-ignore option for pre-commit usage. When a pre-commit is
   invoked it includes a list of filenames. By default secrets will search
   referenced files regardless of the contents of .gitignore or .secretsignore.
