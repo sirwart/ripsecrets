@@ -23,9 +23,9 @@ impl std::error::Error for UsageError {}
 impl fmt::Display for UsageError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            UsageError::PreCommit => write!(f, "Usage: secrets --install-pre-commit"),
-            UsageError::Version => write!(f, "Usage: secrets --version"),
-            UsageError::Help => write!(f, "Usage: secrets --help"),
+            UsageError::PreCommit => write!(f, "Usage: ripsecrets --install-pre-commit"),
+            UsageError::Version => write!(f, "Usage: ripsecrets --version"),
+            UsageError::Help => write!(f, "Usage: ripsecrets --help"),
         }
     }
 }
@@ -42,34 +42,34 @@ fn main_aux(args: &Vec<OsString>) -> Result<usize, Box<dyn Error>> {
         if args.len() > 2 {
             return Err(Box::new(UsageError::Version));
         }
-        println!("secrets {}", env!("CARGO_PKG_VERSION"));
+        println!("ripsecrets {}", env!("CARGO_PKG_VERSION"));
     } else if args.len() > 1 && args[1] == "--help" {
         if args.len() > 2 {
             return Err(Box::new(UsageError::Help));
         }
-        println!("secrets {}
+        println!("ripsecrets {}
 
-secrets searches files and directories recursively for secret API keys.
+ripsecrets searches files and directories recursively for secret API keys.
 It's primarily designed to be used as a pre-commit to prevent committing
 secrets into version control.
 
 USAGE:
-    secrets [--strict-ignore] [PATH ...]
-    secrets --install-pre-commit
-    secrets --only-matching
-    secrets --help
-    secrets --version
+    ripsecrets [--strict-ignore] [PATH ...]
+    ripsecrets --install-pre-commit
+    ripsecrets --only-matching
+    ripsecrets --help
+    ripsecrets --version
 
 OPTIONS:
     --install-pre-commit
-        Installs secrets as part of your git pre-commit hook, creating one if
-        one doesn't already exist.
+        Installs ripsecrets as part of your git pre-commit hook, creating one
+        if one doesn't already exist.
 
     --strict-ignore
         If you pass a path as an argument that's ignored by .secretsignore it
         will be scanned by default. --strict-ignore will override this
         behavior and not search the paths passed as arguments that are excluded
-        by the .secretsignore file. This is useful when invoking secrets as a
+        by the .secretsignore file. This is useful when invoking ripsecrets as a
         pre-commit.
 
     --only-matching

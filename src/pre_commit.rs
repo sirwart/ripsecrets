@@ -25,7 +25,7 @@ impl fmt::Display for PreCommitError {
     }
 }
 
-const PRE_COMMIT: &[u8] = b"secrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`\n";
+const PRE_COMMIT: &[u8] = b"ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`\n";
 
 pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
     let git_root = Path::new(repo_root).join(".git");
@@ -37,7 +37,7 @@ pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
 
     let pre_commit_dir = git_root.join("pre-commit.d");
     if pre_commit_dir.exists() {
-        let pre_commit_dir_fname = pre_commit_dir.join("secrets");
+        let pre_commit_dir_fname = pre_commit_dir.join("ripsecrets");
         if pre_commit_dir_fname.exists() {
             return Err(Box::new(PreCommitError::HookAlreadyInstalled));
         }

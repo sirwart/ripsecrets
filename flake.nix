@@ -12,17 +12,17 @@
       in
         rec {
           # `nix build`
-          packages.secrets = naersk-lib.buildPackage {
-            pname = "secrets";
+          packages.ripsecrets = naersk-lib.buildPackage {
+            pname = "ripsecrets";
             root = ./.;
           };
-          defaultPackage = packages.secrets;
+          defaultPackage = packages.ripsecrets;
 
           # `nix run`
-          apps.secrets = flake-utils.lib.mkApp {
-            drv = packages.secrets;
+          apps.ripsecrets = flake-utils.lib.mkApp {
+            drv = packages.ripsecrets;
           };
-          defaultApp = apps.secrets;
+          defaultApp = apps.ripsecrets;
 
           # `nix develop`
           devShell = pkgs.mkShell {
