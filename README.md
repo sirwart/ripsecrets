@@ -63,11 +63,11 @@ information.
 
 ```yaml
 repos:
-    - repo: https://github.com/sirwart/secrets.git
-      # Set your version, be sure to use the latest and update regularly or use 'main'
-      rev: v0.1.3
-      hooks:
-          - id: secrets
+-   repo: https://github.com/sirwart/secrets.git
+    # Set your version, be sure to use the latest and update regularly or use 'main'
+    rev: v0.1.3
+    hooks:
+    -   id: secrets
 ```
 
 ## Ignoring secrets
@@ -108,8 +108,8 @@ Most of the time your pre-commit will be running on a small number of files, so 
 
 ## Alternative tools
 
-Even if `secrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alterative tools worth considering:
+Even if `secrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alternative tools worth considering:
 
--   [detect-secrets](https://github.com/Yelp/detect-secrets)
--   [trufflehog](https://github.com/trufflesecurity/trufflehog)
--   [gitleaks](https://github.com/zricethezav/gitleaks)
+- [detect-secrets](https://github.com/Yelp/detect-secrets)
+- [trufflehog](https://github.com/trufflesecurity/trufflehog)
+- [gitleaks](https://github.com/zricethezav/gitleaks)
