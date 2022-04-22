@@ -1,5 +1,7 @@
 # ripsecrets
 
+![ripsecrets logo, a gravestone that says "R.I.P. Secrets ?-20XX Death by Exposure"](.github/ripsecrets-logo.svg)
+
 `ripsecrets` is a command-line tool to prevent committing secret keys into your source code. `ripsecrets` has a few features that distinguish it from other secret scanning tools:
 
 1. Focused on pre-commit. It's a lot cheaper to prevent secrets from getting committed in the first place than dealing with the consequences once a secret that has been committed to your repository has been detected.
