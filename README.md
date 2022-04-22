@@ -47,7 +47,7 @@ $ ripsecrets --install-pre-commit
 If you would like to install `ripsecrets` _manually_, you can add the following command to your `pre-commit` script:
 
 ```
-$ ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
+ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
 ```
 
 Passing `--strict-ignore` ensures that your `.secretsignore` file is respected when running secrets as a pre-commit.
@@ -59,7 +59,7 @@ You can download a prebuilt binary for the latest release from the [releases](ht
 Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
 
 ```
-cargo install --git https://github.com/sirwart/ripsecrets --branch main
+$ cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
 ### Using pre-commit
