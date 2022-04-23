@@ -1,12 +1,9 @@
 use clap::Parser;
+use ripsecrets::find_secrets;
 use std::fmt;
 use std::path::PathBuf;
 use std::process;
 
-mod find_secrets;
-mod ignore_info;
-mod matcher;
-mod p_random;
 mod pre_commit;
 
 #[derive(Debug)]
@@ -81,7 +78,7 @@ fn main() {
             }
         }
     } else {
-        match find_secrets::find_secrets(&paths, args.strict_ignore) {
+        match find_secrets(&paths, args.strict_ignore) {
             Ok(0) => process::exit(0),
             // We already printed info on discovered secrets,
             // so just exit

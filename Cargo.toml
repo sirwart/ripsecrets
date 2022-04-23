@@ -14,3 +14,11 @@ termcolor = "1.1.2"
 memoize = "0.3.0"
 tempfile = "3.3.0"
 clap = { version = "3.1.10", features = ["derive"] }
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "find_secrets"
+harness = false
+
