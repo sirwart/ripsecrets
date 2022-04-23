@@ -14,6 +14,7 @@ termcolor = "1.1.2"
 memoize = "0.3.0"
 tempfile = "3.3.0"
 clap = { version = "3.1.10", features = ["derive"] }
+fxhash = "0.2.1"
 
 [dev-dependencies]
 criterion = "0.3"
