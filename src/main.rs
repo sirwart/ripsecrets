@@ -65,6 +65,11 @@ fn main() {
         args.paths
     };
 
+    if args.install_pre_commit && args.strict_ignore {
+        eprintln!("Error: --strict-ignore not a valid option when installing pre-commits. Use --install-pre-commit alone");
+        process::exit(2);
+    }
+
     if args.install_pre_commit {
         for path in paths {
             match pre_commit::install_pre_commit(&path) {
