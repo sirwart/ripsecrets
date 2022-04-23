@@ -116,6 +116,12 @@ Additionally, `ripsecrets` is written in Rust, which means there's no interprete
 
 Most of the time, your pre-commit will be running on a small number of files, so the runtimes above are not typical, but when working with large commits that touch a lot of files the runtime can become noticeable.
 
+## Running benchmarks
+
+```shell
+$ cargo bench
+```
+
 ## Alternative tools
 
 Even if `ripsecrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alternative tools worth considering:
