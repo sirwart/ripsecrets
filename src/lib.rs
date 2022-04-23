@@ -11,8 +11,8 @@ use ignore::gitignore::Gitignore;
 use ignore::WalkBuilder;
 use termcolor::{BufferWriter, ColorChoice};
 
-use crate::ignore_info;
-use crate::matcher;
+mod ignore_info;
+mod matcher;
 
 fn predefined_secret_regexes() -> Vec<&'static str> {
     return vec![
