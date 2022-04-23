@@ -7,8 +7,8 @@ use std::sync::Arc;
 
 use grep::printer;
 use grep::searcher::Searcher;
-use ignore::WalkBuilder;
 use ignore::gitignore::Gitignore;
+use ignore::WalkBuilder;
 use termcolor::{BufferWriter, ColorChoice};
 
 use crate::ignore_info;
@@ -22,14 +22,15 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "(?:^|\\W)eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*?", // jwt
         "xox(?:a|b|p|o|s|r)-(?:\\d+-)+[a-z0-9]+",   // slack
         "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+", // slack webhooks
-        "//.+/:_authToken=[A-Za-z0-9-_]+", // legacy npm
-        "npm_[A-Za-z0-9]{36}",            // modern npm tokens
-        "AccountKey=[a-zA-Z0-9+/=]{88}",  // azure storage
+        "//.+/:_authToken=[A-Za-z0-9-_]+",            // legacy npm
+        "npm_[A-Za-z0-9]{36}",                        // modern npm tokens
+        "AccountKey=[a-zA-Z0-9+/=]{88}",              // azure storage
         "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}", // sendgrid
-        "[0-9a-z]{32}-us[0-9]{1,2}",      // mailchimp
-        r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#, // square
-        "AIzaSy[A-Za-z0-9-_]{33}",        // gcp api key
+        "[0-9a-z]{32}-us[0-9]{1,2}",                  // mailchimp
+        r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#,             // square
+        "AIzaSy[A-Za-z0-9-_]{33}",                    // gcp api key
         // Private keys
+        "AGE-SECRET-KEY-[A-Z0-9]{59}", // age secret key
         "-----BEGIN DSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
         "-----BEGIN EC PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
         "-----BEGIN OPENSSH PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
@@ -74,7 +75,7 @@ pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box
             if !is_ignored(&path, &ignore_matcher) {
                 to_search.push(path.clone());
             }
-        };
+        }
     } else {
         for path in paths {
             to_search.push(path.clone());
@@ -153,7 +154,7 @@ fn is_ignored(path: &Path, ignore_matcher: &Gitignore) -> bool {
             return true;
         }
     }
-    return false
+    return false;
 }
 
 #[cfg(test)]
@@ -192,7 +193,13 @@ mod tests {
         let res = find_secrets(&[PathBuf::from("test")], true);
         assert_eq!(res.unwrap(), 0);
 
-        let res = find_secrets(&[PathBuf::from("test/one_per_line/aws"), PathBuf::from("test/one_per_line/azure")], true);
+        let res = find_secrets(
+            &[
+                PathBuf::from("test/one_per_line/aws"),
+                PathBuf::from("test/one_per_line/azure"),
+            ],
+            true,
+        );
         assert_eq!(res.unwrap(), 0);
     }
 }
