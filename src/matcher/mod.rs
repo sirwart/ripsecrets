@@ -1,10 +1,9 @@
+use crate::matcher::p_random::p_random;
+use grep::matcher::{Match, Matcher, NoCaptures, NoError};
 use regex::bytes::{Regex, RegexBuilder};
 use std::collections::HashSet;
 use std::error::Error;
-
-use grep::matcher::{Match, Matcher, NoCaptures, NoError};
-
-use crate::p_random::p_random;
+pub mod p_random;
 
 // We only flag random strings that occur on the same line as one of our four keywords
 pub const RANDOM_STRING_REGEX: &str = r#"(?:secret|token|key|password|Secret|SECRET|Token|TOKEN|Key|KEY|Password|PASSWORD)\w*['"]?]?\s*(?:=|:|:=)\s*['"` \t]?([A-Za-z0-9+/_\-.~=]{15,80})(?:['"` \t\n]|$)"#;
