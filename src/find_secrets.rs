@@ -181,7 +181,7 @@ mod tests {
                 entry.file_name()
             );
         }
-        for maybe_entry in fs::read_dir("test/one").unwrap() {
+        for maybe_entry in fs::read_dir("test/one_per_file").unwrap() {
             let entry = maybe_entry.unwrap();
             let res = find_secrets(&[entry.path()], false);
             assert_eq!(res.unwrap(), 1, "{:?}", entry.file_name());
