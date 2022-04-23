@@ -8,7 +8,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     group
         .sample_size(150)
         .measurement_time(Duration::new(15, 0));
-    let paths = &[PathBuf::from(".")];
+    let paths = &[PathBuf::from("./test")];
 
     group.bench_function("find_secrets function", |b| {
         b.iter(|| find_secrets(black_box(paths), false))
