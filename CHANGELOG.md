@@ -1,3 +1,7 @@
+## 0.1.4 (Not yet released)
+
+- [Bug #31] Detect secrets assigned with := operator
+
 ## 0.1.3 (2022-04-22)
 
 - Renamed from `secrets` to `ripsecrets` to avoid name collisions with other
