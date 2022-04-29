@@ -43,7 +43,7 @@ pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
         }
         write_pre_commit_file(&pre_commit_dir_fname)?;
     } else {
-        let pre_commit_fname = hooks_dir.join("pre_commit");
+        let pre_commit_fname = hooks_dir.join("pre-commit");
 
         if !pre_commit_fname.exists() {
             write_pre_commit_file(&pre_commit_fname)?;
