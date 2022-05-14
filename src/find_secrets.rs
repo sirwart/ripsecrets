@@ -55,7 +55,7 @@ fn combined_regex(regexes: &[&str]) -> String {
     combined
 }
 
-pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box<dyn Error>> {
+pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool, only_matching: bool) -> Result<usize, Box<dyn Error>> {
     let predefined = predefined_secret_regexes();
     let combined = combined_regex(&predefined);
 
@@ -100,7 +100,11 @@ pub fn find_secrets(paths: &[PathBuf], strict_ignore: bool) -> Result<usize, Box
 
     parallel_walker.run(move || {
         let bufwtr = bufwtr.clone();
-        let mut printer = printer::Standard::new(bufwtr.buffer());
+
+        let mut printer_builder = printer::StandardBuilder::new();
+        printer_builder.only_matching(only_matching);
+        let mut printer = printer_builder.build(bufwtr.buffer());
+
         let matcher = matcher.clone();
         let mut searcher = Searcher::new();
         let match_count_result = match_count_result.clone();
@@ -164,7 +168,7 @@ mod tests {
 
     #[test]
     fn no_false_positives() {
-        let res = find_secrets(&[PathBuf::from("test/none")], false);
+        let res = find_secrets(&[PathBuf::from("test/none")], false, false);
         assert_eq!(res.unwrap(), 0)
     }
 
@@ -173,7 +177,7 @@ mod tests {
         for maybe_entry in fs::read_dir("test/one_per_line").unwrap() {
             let entry = maybe_entry.unwrap();
             let contents = fs::read_to_string(entry.path()).unwrap();
-            let res = find_secrets(&[entry.path()], false);
+            let res = find_secrets(&[entry.path()], false, false);
             assert_eq!(
                 res.unwrap(),
                 contents.matches("\n").count(),
@@ -183,14 +187,14 @@ mod tests {
         }
         for maybe_entry in fs::read_dir("test/one_per_file").unwrap() {
             let entry = maybe_entry.unwrap();
-            let res = find_secrets(&[entry.path()], false);
+            let res = find_secrets(&[entry.path()], false, false);
             assert_eq!(res.unwrap(), 1, "{:?}", entry.file_name());
         }
     }
 
     #[test]
     fn strict_ignore_works() {
-        let res = find_secrets(&[PathBuf::from("test")], true);
+        let res = find_secrets(&[PathBuf::from("test")], true, false);
         assert_eq!(res.unwrap(), 0);
 
         let res = find_secrets(
@@ -199,6 +203,7 @@ mod tests {
                 PathBuf::from("test/one_per_line/azure"),
             ],
             true,
+            false,
         );
         assert_eq!(res.unwrap(), 0);
     }

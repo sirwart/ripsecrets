@@ -52,6 +52,11 @@ struct Args {
     #[clap(long = "strict-ignore")]
     strict_ignore: bool,
 
+    /// Print only the matched (non-empty) parts of a matching line, with each such
+    /// part on a separate output line.
+    #[clap(long = "only-matching")]
+    only_matching: bool,
+
     /// Source files. Can be files or directories. Defaults to '.'
     #[clap(name = "Source files", parse(from_os_str))]
     paths: Vec<PathBuf>,
@@ -65,8 +70,9 @@ fn main() {
         args.paths
     };
 
-    if args.install_pre_commit && args.strict_ignore {
-        eprintln!("Error: --strict-ignore not a valid option when installing pre-commits. Use --install-pre-commit alone");
+    if args.install_pre_commit && (args.strict_ignore || args.only_matching) {
+        let option = if args.strict_ignore { "--strict-ignore" } else { "--only-matching" };
+        eprintln!("Error: {} is not a valid option when installing pre-commits. Use --install-pre-commit alone", option);
         process::exit(2);
     }
 
@@ -81,7 +87,7 @@ fn main() {
             }
         }
     } else {
-        match find_secrets::find_secrets(&paths, args.strict_ignore) {
+        match find_secrets::find_secrets(&paths, args.strict_ignore, args.only_matching) {
             Ok(0) => process::exit(0),
             // We already printed info on discovered secrets,
             // so just exit

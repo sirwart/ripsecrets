@@ -98,6 +98,11 @@ impl Matcher for IgnoringMatcher {
                                 {
                                     pos = m.end();
                                     continue; // advance past this since we want to ignore
+                                } else {
+                                    // If we did hit the random string regex, we want to count the secret matched
+                                    // As only the secret matched, not the entire regex match. This becomes especially
+                                    // important when using the --only-matching option
+                                    return Ok(Some(Match::new(str_pos.0, str_pos.1)));
                                 }
                             }
                             return Ok(Some(m));
