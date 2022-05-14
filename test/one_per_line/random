@@ -1,3 +1,7 @@
 APP_KEY = "iftkeq2y4qj0nbt"
 clientSecretKey := "2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I"
 export secret_key=2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I
+"key": "2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I"
+'key': "2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I"
+['dict_key'] = "2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I"
+key 2Tm6cdsRVBTL9hRCmR6MRDTpMLFS4I
