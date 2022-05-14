@@ -1,4 +1,4 @@
-## 0.1.4 (Not yet released)
+## 0.1.4 (2022-05-14)
 
 - [Bug #31] Detect secrets assigned with := operator
 - Fix pre-commit getting installed at wrong filename
