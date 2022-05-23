@@ -105,11 +105,9 @@ fn run() -> RunResult {
         RunResult::PreCommitInstallSuccessful
     } else {
         match find_secrets::find_secrets(&paths, args.strict_ignore, args.only_matching) {
-            // If we found 0 secrets, return an exit code of 0
             Ok(0) => RunResult::NoSecretsFound,
             // If we found 1 or more secrets, it's not an error, BUT we don't
-            // want to simply return exit code 0 to main()
-            // Instead, return an exit code of 1 to main()
+            // want to notify the user via a different exit code.
             Ok(_num_secrets) => RunResult::SecretsFound,
             // If there's a real error, return it as a String for main()
             // to handle.
