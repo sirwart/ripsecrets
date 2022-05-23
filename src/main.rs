@@ -1,5 +1,6 @@
 use clap::Parser;
 use std::path::PathBuf;
+use std::process;
 
 mod find_secrets;
 mod ignore_info;
@@ -48,7 +49,26 @@ struct Args {
     paths: Vec<PathBuf>,
 }
 
-fn main() -> Result<(), String> {
+enum RunResult {
+    PreCommitInstallSuccessful,
+    NoSecretsFound,
+    SecretsFound,
+    Error(String),
+}
+
+fn main() {
+    match run() {
+        RunResult::PreCommitInstallSuccessful => process::exit(0),
+        RunResult::NoSecretsFound => process::exit(0),
+        RunResult::SecretsFound => process::exit(1),
+        RunResult::Error(e) => {
+            eprintln!("Error: {}", e);
+            process::exit(2)
+        }
+    }
+}
+
+fn run() -> RunResult {
     let args = Args::parse();
     let paths = if args.paths.is_empty() {
         vec![PathBuf::from(".")]
@@ -62,7 +82,7 @@ fn main() -> Result<(), String> {
         } else {
             "--only-matching"
         };
-        return Err(format!(
+        return RunResult::Error(format!(
             "{} is not a valid option when installing pre-commits. Use --install-pre-commit alone",
             option
         ));
@@ -76,20 +96,24 @@ fn main() -> Result<(), String> {
                 Ok(()) => (),
                 Err(err) => {
                     // If we get an error when trying to install
-                    // pre-commit, exit with Error as a String
-                    return Err(err.to_string());
+                    // pre-commit, return an Error as a String
+                    return RunResult::Error(err.to_string());
                 }
             }
         }
         // Made it through all the paths just fine
-        // Exit Ok
-        Ok(())
+        RunResult::PreCommitInstallSuccessful
     } else {
         match find_secrets::find_secrets(&paths, args.strict_ignore, args.only_matching) {
-            // We already printed info on discovered secrets,
-            // so just exit
-            Ok(_num_secrets) => Ok(()),
-            Err(err) => Err(err.to_string()),
+            // If we found 0 secrets, return an exit code of 0
+            Ok(0) => RunResult::NoSecretsFound,
+            // If we found 1 or more secrets, it's not an error, BUT we don't
+            // want to simply return exit code 0 to main()
+            // Instead, return an exit code of 1 to main()
+            Ok(_num_secrets) => RunResult::SecretsFound,
+            // If there's a real error, return it as a String for main()
+            // to handle.
+            Err(err) => RunResult::Error(err.to_string()),
         }
     }
 }
