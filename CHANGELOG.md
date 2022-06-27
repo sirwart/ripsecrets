@@ -1,3 +1,7 @@
+## 0.1.5 (2022-06-26)
+
+- Fix excessive false positives from random string detection
+
 ## 0.1.4 (2022-05-14)
 
 - [Bug #31] Detect secrets assigned with := operator
