@@ -98,6 +98,16 @@ In addition to the .secretsignore file, `ripsecrets` is compatible with `detect-
 test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 ```
 
+## How it works
+
+ `ripsecrets` has 2 types of secrets that it can find in code:
+
+1. Secrets with known patterns that can be matched. API keys from services like Stripe and Slack have a predefined prefix that identifies them as API keys and these can be found via regular expressions very reliably. You can see the current list of known secrets matched by `ripsecrets` [here](https://github.com/sirwart/ripsecrets/blob/main/src/find_secrets.rs#L17).
+
+2. Random strings assigned to secret variables. Some secrets, like AWS's secret access keys, don't have a known pattern that can be unambiguously matched. To detect these, `ripsecrets` looks for variables or properties that are being assigned with words like "token", "secret", and "password", and checks if a random string is assigned to it.
+
+If you find either a false negative (a secret that wasn't found by `ripsecrets`) or a false positive (a non-secret that was flagged as such), please open an issue or a pull request.
+
 ## Performance
 
 The slowest part of secret scanning is looking for potential secrets in a large number of files. To do this quickly `ripsecrets` does a couple of things:
