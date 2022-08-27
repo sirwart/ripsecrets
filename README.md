@@ -102,9 +102,11 @@ test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 
  `ripsecrets` has 2 types of secrets that it can find in code:
 
-1. Secrets with known patterns that can be matched. API keys from services like Stripe and Slack have a predefined prefix that identifies them as API keys and these can be found via regular expressions very reliably. You can see the current list of known secrets matched by `ripsecrets` [here](https://github.com/sirwart/ripsecrets/blob/main/src/find_secrets.rs#L17).
+1. Secrets with known patterns that can be matched. API keys from services like Stripe and Slack have a predefined prefix that identifies them as API keys and can be found via regular expressions very reliably. You can see the current list of known secrets matched by `ripsecrets` [here](https://github.com/sirwart/ripsecrets/blob/main/src/find_secrets.rs#L17).
 
 2. Random strings assigned to secret variables. Some secrets, like AWS's secret access keys, don't have a known pattern that can be unambiguously matched. To detect these, `ripsecrets` looks for variables or properties that are being assigned with words like "token", "secret", and "password", and checks if a random string is assigned to it.
+
+To determine if a string is random or not `ripsecrets` looks at a few properties of a string, like how many distinct characters it has, and calculates how likely it is to have occurred by random chance. If the probability that it happened by chance is less than 1 in 10,000 then it's determined to not be a secret. You can learn more about how the probability is calculated [here](https://github.com/sirwart/ripsecrets/blob/main/src/p_random.rs#L7).
 
 If you find either a false negative (a secret that wasn't found by `ripsecrets`) or a false positive (a non-secret that was flagged as such), please open an issue or a pull request.
 
