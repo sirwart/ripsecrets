@@ -54,7 +54,19 @@ Passing `--strict-ignore` ensures that your `.secretsignore` file is respected w
 
 ## Installation
 
+### Homebrew
+
+[`ripsecrets`](https://formulae.brew.sh/formula/ripsecrets) is available in Homebrew for macOS and Linux:
+
+```
+$ brew install ripsecrets
+```
+
+### Pre-built
+
 You can download a prebuilt binary for the latest release from the [releases](https://github.com/sirwart/secrets/releases) page.
+
+### Cargo
 
 Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
 
@@ -62,7 +74,7 @@ Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and C
 $ cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
-### Using pre-commit
+### Using `pre-commit`
 
 `ripsecrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
 the following configuration.
