@@ -74,6 +74,13 @@ Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and C
 $ cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
+### Nix Flake
+
+Assuming you have enabled [Flakes](https://nixos.wiki/wiki/Flakes) in your Nix configuration, you can build the `ripsecrets` binary and make it available in your default Nix profile by running:
+```
+$ nix profile install github:sirwart/ripsecrets
+```
+
 ### Using `pre-commit`
 
 `ripsecrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
