@@ -5,8 +5,8 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, naersk }:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
+    flake-utils.lib.eachDefaultSystem (system:
+      let
         pkgs = nixpkgs.legacyPackages."${system}";
         naersk-lib = naersk.lib."${system}";
       in
@@ -15,6 +15,8 @@
           packages.ripsecrets = naersk-lib.buildPackage {
             pname = "ripsecrets";
             root = ./.;
+            doCheck = true;
+            checkInputs = [ pkgs.nix ];
           };
           defaultPackage = packages.ripsecrets;
 
