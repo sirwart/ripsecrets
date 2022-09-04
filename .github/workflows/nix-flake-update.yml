@@ -1,0 +1,26 @@
+---
+name: Update Nix Flake Lock File
+
+on:
+  schedule:
+    - cron: '0 0 * * 6' # run every Saturday at midnight
+  workflow_dispatch: {} # allow manually running
+
+jobs:
+  nix-flake-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: cachix/install-nix-action@v17
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Checkout or create `update/nix-flake` branch
+        run: git switch -c update/nix-flake
+      - name: Perform the update
+        run: nix flake update && git add flake.lock
+      - name: Raise pull request
+        run: gh pr create -B update/nix-flake -H main --title 'Update Nix Flake lock file' --body ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
