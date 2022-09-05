@@ -16,7 +16,7 @@ tempfile = "3.3.0"
 clap = { version = "3.1.10", features = ["derive"] }
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = { version = "0.3", features = ["html_reports"] }
 
 [[bench]]
 name = "find_secrets"
