@@ -122,6 +122,8 @@ Most of the time, your pre-commit will be running on a small number of files, so
 $ cargo bench
 ```
 
+The results will then be viewable at `target/criterion/report/index.html`.
+
 ## Alternative tools
 
 Even if `ripsecrets` is not the right tool for you, if you're working on a service that deals with user data you should strongly consider using a secret scanner. Here are some alternative tools worth considering:
