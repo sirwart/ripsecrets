@@ -26,7 +26,7 @@
         defaultApp = apps.ripsecrets;
 
         checks = {
-          # pre-commit configuration
+          build = self.defaultPackage.${system};
           pre-commit-check = pre-commit {
             src = ./.;
             hooks = {
