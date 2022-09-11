@@ -1,3 +1,4 @@
 .DS_Store
 /.pre-commit-config.yaml
+/result
 /target
