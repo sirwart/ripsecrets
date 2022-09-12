@@ -25,7 +25,8 @@ impl fmt::Display for PreCommitError {
     }
 }
 
-const PRE_COMMIT: &[u8] = b"ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`\n";
+const PRE_COMMIT: &[u8] =
+    b"ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`\n";
 
 pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
     let git_root = Path::new(repo_root).join(".git");
