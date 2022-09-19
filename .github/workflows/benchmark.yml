@@ -1,0 +1,34 @@
+---
+name: Benchmark
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    name: Run and publish benchmarks
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - uses: cachix/install-nix-action@v17
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - name: Delete Markdown files from submodule to avoid Jekyll errors
+        run: find benches -name "*.md" -delete
+      - name: Run benchmark
+        run: |
+          nix develop
+          cargo bench --bench find_secrets -- --output-format bencher >benchmark.txt 2>/dev/null
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1.14.0
+        with:
+          tool: cargo
+          output-file-path: benchmark.txt
+          # Access token to deploy GitHub Pages branch
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Push and deploy GitHub Pages branch automatically
+          auto-push: true

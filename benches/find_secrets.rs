@@ -6,7 +6,9 @@ use termcolor::{BufferWriter, ColorChoice};
 
 fn criterion_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("Find secrets in getsentry/sentry");
-    group.sample_size(30).measurement_time(Duration::new(15, 0));
+    group
+        .sample_size(10)
+        .measurement_time(Duration::new(120, 0));
     let paths = &[PathBuf::from("./benches/getsentry/sentry")];
 
     group.bench_function("find_secrets function", |b| {
