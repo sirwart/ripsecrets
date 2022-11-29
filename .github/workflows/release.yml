@@ -1,0 +1,99 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'The tag to emulate'
+        required: true
+        type: string
+
+jobs:
+  determine-tag:
+    name: Determine tag to use
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.on-push.outputs.tag }}
+      input: ${{ steps.on-workflow.outputs.tag }}
+      version: ${{ steps.combine.outputs.version }}
+
+    steps:
+      - name: Use Git ref
+        id: on-push
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          echo "tag=${{ github.ref }}" >> $GITHUB_OUTPUT
+
+      - name: Use workflow input
+        id: on-workflow
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
+
+      - name: Determine actual tag
+        id: combine
+        run: |
+          REF=${{ steps.on-push.outputs.tag }}
+          INPUT=${{ steps.on-workflow.outputs.tag }}
+          if [[ -n "$REF" ]]; then
+            echo "version=${REF:1}" >> $GITHUB_OUTPUT
+          elif [[ -n "$INPUT" ]]; then
+            echo "version=${INPUT:1}" >> $GITHUB_OUTPUT
+          fi
+
+  build-oci:
+    name: Build OCI image
+    runs-on: ubuntu-latest
+    needs:
+      - determine-tag
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install and configure Nix
+        uses: cachix/install-nix-action@v18
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Build the OCI tar.gz
+        run: nix build .#oci
+
+      - name: Temporarily save the OCI archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: oci-tar-gz-${{ needs.determine-tag.outputs.version }}
+          path: result
+          retention-days: 1
+
+  publish-oci:
+    name: Push to Docker Hub
+    runs-on: ubuntu-latest
+    needs:
+      - determine-tag
+      - build-oci
+
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Retrieve OCI archive
+        uses: actions/download-artifact@v3
+        with:
+          name: oci-tar-gz-${{ needs.determine-tag.outputs.version }}
+          path: .
+
+      - name: Docker load
+        run: |
+          docker load --input result
+
+      - name: Docker tag
+        run: |
+          docker tag ripsecrets ${{ github.repository }}:${{ needs.determine-tag.outputs.version }}
