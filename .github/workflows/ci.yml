@@ -23,4 +23,4 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - run: |
-          nix flake check --show-trace
+          nix flake check --no-build --show-trace
