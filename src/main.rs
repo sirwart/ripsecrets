@@ -2,6 +2,7 @@ use clap::Parser;
 use ripsecrets::find_secrets;
 use std::path::PathBuf;
 use std::process;
+use termcolor::{BufferWriter, ColorChoice};
 
 mod pre_commit;
 
@@ -101,7 +102,12 @@ fn run() -> RunResult {
         // Made it through all the paths just fine
         RunResult::PreCommitInstallSuccessful
     } else {
-        match find_secrets(&paths, args.strict_ignore, args.only_matching) {
+        match find_secrets(
+            &paths,
+            args.strict_ignore,
+            args.only_matching,
+            BufferWriter::stdout(ColorChoice::Never),
+        ) {
             Ok(0) => RunResult::NoSecretsFound,
             // If we found 1 or more secrets, it's not an error, BUT we do
             // want to notify the user via a different exit code.
