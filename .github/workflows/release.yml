@@ -97,3 +97,7 @@ jobs:
       - name: Docker tag
         run: |
           docker tag ripsecrets ${{ github.repository }}:${{ needs.determine-tag.outputs.version }}
+
+      - name: Docker push
+        run: |
+          docker push ${{ github.repository }}:${{ needs.determine-tag.outputs.version }}
