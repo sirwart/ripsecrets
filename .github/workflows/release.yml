@@ -56,9 +56,6 @@ jobs:
 
       - name: Install and configure Nix
         uses: cachix/install-nix-action@v18
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
 
       - name: Build the OCI tar.gz
         run: nix build .#oci

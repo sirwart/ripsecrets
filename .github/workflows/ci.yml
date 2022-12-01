@@ -9,18 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
+      - uses: cachix/install-nix-action@v18
       - run: nix build
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v17
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
+      - uses: cachix/install-nix-action@v18
       - run: |
           nix flake check --no-build --show-trace
