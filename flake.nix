@@ -21,6 +21,17 @@
         };
         defaultPackage = packages.ripsecrets;
 
+        # `nix build .#oci`
+        packages.oci = pkgs.dockerTools.buildImage {
+          name = "ripsecrets";
+          tag = "latest";
+          config = {
+            Entrypoint = [ "${packages.ripsecrets}/bin/ripsecrets" ];
+            WorkingDir = "/data";
+            Volumes = { "/data" = { }; };
+          };
+        };
+
         # `nix run`
         apps.ripsecrets = flake-utils.lib.mkApp { drv = packages.ripsecrets; };
         defaultApp = apps.ripsecrets;
