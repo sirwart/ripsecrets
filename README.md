@@ -76,6 +76,8 @@ $ cargo install --git https://github.com/sirwart/ripsecrets --branch main
 
 ### Nix Flake
 
+[![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
+
 Assuming you have enabled [Flakes](https://nixos.wiki/wiki/Flakes) in your Nix configuration, you can build the `ripsecrets` binary and make it available in your default Nix profile by running:
 ```
 $ nix profile install github:sirwart/ripsecrets
