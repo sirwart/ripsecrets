@@ -11,15 +11,25 @@ jobs:
     name: Run and publish benchmarks
     steps:
       - uses: actions/checkout@v3
+
+      - name: Clone getsentry/sentry
+        uses: actions/checkout@v3
         with:
-          submodules: true
-      - uses: cachix/install-nix-action@v18
+          repository: getsentry/sentry
+          ref: f5d9a4c3e403d3419dea9b0005408d34d30c6015
+          path: benches/getsentry/sentry
+
       - name: Delete Markdown files from submodule to avoid Jekyll errors
         run: find benches -name "*.md" -delete
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v18
+
       - name: Run benchmark
         run: |
           nix develop
           cargo bench --bench find_secrets -- --output-format bencher >benchmark.txt 2>/dev/null
+
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1.14.0
         with:
