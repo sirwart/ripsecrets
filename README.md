@@ -86,17 +86,26 @@ $ nix profile install github:sirwart/ripsecrets
 `ripsecrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
 the following configuration.
 
-Note that this may require having Cargo and a Rust compiler already installed.
-See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more
-information.
+There are two hooks provided:
+
+- `ripsecrets` - This hook requires having Cargo and a Rust compiler already installed.
+   See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more
+   information.
+- `ripsecrets-system` - This hook requires having `ripsecrets` installed and available
+   on through other means, e.g. your package manager or
+   [a prebuilt, binary release](https://github.com/sirwart/ripsecrets/releases)
+   otherwise on your PATH. This is ideal if you wish to avoid installing a Rust environment.
 
 ```yaml
 repos:
 -   repo: https://github.com/sirwart/ripsecrets.git
     # Set your version, be sure to use the latest and update regularly or use 'main'
-    rev: v0.1.3
+    rev: v0.1.5
     hooks:
+    # use this one when you have a rust environment available
     -   id: ripsecrets
+    # use this one when you will install ripsecrets with a package manager
+    # -   id: ripsecrets-system
 ```
 
 ## Ignoring secrets
