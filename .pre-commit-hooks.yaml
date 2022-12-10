@@ -7,3 +7,12 @@
     args: [--strict-ignore]
     require_serial: true
     minimum_pre_commit_version: '0'
+-   id: ripsecrets-system
+    name: ripsecrets
+    description: 'Prevent committing secret keys into your source code'
+    entry: ripsecrets
+    language: system
+    'types': [text]
+    args: [--strict-ignore]
+    require_serial: true
+    minimum_pre_commit_version: '0'
