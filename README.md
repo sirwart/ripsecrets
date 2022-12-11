@@ -94,7 +94,7 @@ information.
 repos:
 -   repo: https://github.com/sirwart/ripsecrets.git
     # Set your version, be sure to use the latest and update regularly or use 'main'
-    rev: v0.1.3
+    rev: v0.1.5
     hooks:
     -   id: ripsecrets
 ```
