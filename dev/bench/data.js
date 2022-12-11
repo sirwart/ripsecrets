@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670085949974,
+  "lastUpdate": 1670723415643,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -89,6 +89,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 7094238171,
             "range": "± 574124566",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "colindean@users.noreply.github.com",
+            "name": "Colin Dean",
+            "username": "colindean"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f730be1601b4ea9da14988a59014f90146ce90be",
+          "message": "Bumps pre-commit example to 0.1.5 (#50)",
+          "timestamp": "2022-12-10T17:41:04-08:00",
+          "tree_id": "3d337067219b95b5c4e3a3c8e21e9418bd47fe9c",
+          "url": "https://github.com/sirwart/ripsecrets/commit/f730be1601b4ea9da14988a59014f90146ce90be"
+        },
+        "date": 1670723414393,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 8782648781,
+            "range": "± 563683512",
             "unit": "ns/iter"
           }
         ]
