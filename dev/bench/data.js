@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670723415643,
+  "lastUpdate": 1670723451452,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -119,6 +119,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 8782648781,
             "range": "± 563683512",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "colindean@users.noreply.github.com",
+            "name": "Colin Dean",
+            "username": "colindean"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0d3a739b20d54170762e531c34518d94bf8329c",
+          "message": "Provide hook option to use a locally-installed ripsecrets (#51)\n\n* Provide hook option to use a locally-installed ripsecrets\r\n\r\nThis should enable a pre-commit config to use a ripsecrets binary already installed instead of having to build ripsecrets from source. Notably, this should allow Homebrew users to include precommit and ripsecrets in a Brewfile and avoid having to also have a rust build environment installed just for ripsecrets usage with precommit.\r\n\r\n* Explains hooks differences in README",
+          "timestamp": "2022-12-10T17:42:19-08:00",
+          "tree_id": "aa799fe30167080b80cb29956f59fb6c5778b1e9",
+          "url": "https://github.com/sirwart/ripsecrets/commit/a0d3a739b20d54170762e531c34518d94bf8329c"
+        },
+        "date": 1670723450358,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 7065282904,
+            "range": "± 899058192",
             "unit": "ns/iter"
           }
         ]
