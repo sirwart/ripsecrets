@@ -1,7 +1,10 @@
 [package]
 name = "ripsecrets"
+description = "A command-line tool to prevent committing secret keys into your source code"
 version = "0.1.5"
 edition = "2021"
+repository = "https://github.com/sirwart/ripsecrets"
+homepage = "https://github.com/sirwart/ripsecrets"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
