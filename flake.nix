@@ -93,7 +93,6 @@
             hooks = {
               nixfmt.enable = true;
               rustfmt.enable = true;
-              cargo-check.enable = true;
             };
           };
         } // lib.optionalAttrs (system == "x86_64-linux") {
