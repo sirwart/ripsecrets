@@ -195,7 +195,7 @@ mod tests {
             );
             assert_eq!(
                 res.unwrap(),
-                contents.matches("\n").count(),
+                contents.matches('\n').count(),
                 "{:?}",
                 entry.file_name()
             );
