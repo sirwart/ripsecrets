@@ -60,6 +60,7 @@
         pre-commit = pre-commit-hooks.lib."${system}".run;
       in {
         # `nix build`
+        packages.ripsecrets = ripsecrets;
         packages.default = ripsecrets;
 
         # `nix build .#oci`
