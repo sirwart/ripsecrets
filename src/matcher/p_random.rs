@@ -3,19 +3,17 @@ use std::collections::hash_set::HashSet;
 
 use memoize::memoize;
 
-/*
-    When we get a potential secret that doesn't match any known secret patterns, we need to make some determination of
-    whether it's a random string or not. To do that we assume it's random, and then calculate the probability that a few
-    metrics came about by chance:
-
-    1. Number of distinct values. Non-random text is generally going to have much fewer distinct values than random text.
-    2. Number of numbers. It's very common to have very few numbers in non-random text.
-    3. Number of bigrams. If we take a sample of roughly 10% of possible bigrams that are common in source code, we should
-       expect that a random string should have about 10% of those bigrams.
-
-    This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
-    be judged on how well it's able to distinguish random from non-random text.
-*/
+/// When we get a potential secret that doesn't match any known secret patterns, we need to make some determination of
+/// whether it's a random string or not. To do that we assume it's random, and then calculate the probability that a few
+/// metrics came about by chance:
+///
+/// 1. Number of distinct values. Non-random text is generally going to have much fewer distinct values than random text.
+/// 2. Number of numbers. It's very common to have very few numbers in non-random text.
+/// 3. Number of bigrams. If we take a sample of roughly 10% of possible bigrams that are common in source code, we should
+///    expect that a random string should have about 10% of those bigrams.
+///
+/// This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
+/// be judged on how well it's able to distinguish random from non-random text.
 pub fn p_random(s: &[u8]) -> f64 {
     return p_random_distinct_values(s) * p_random_char_class(s) * p_random_bigrams(s);
 }
