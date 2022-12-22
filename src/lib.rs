@@ -97,8 +97,8 @@ pub fn find_secrets(
     }
 
     let mut walk_builder = WalkBuilder::new(&to_search[0]);
-    for addtional_path in &to_search[1..] {
-        walk_builder.add(addtional_path);
+    for additional_path in &to_search[1..] {
+        walk_builder.add(additional_path);
     }
     if ignore_info.ignore_file_path.is_some() {
         walk_builder.add_ignore(ignore_info.ignore_file_path.unwrap());

@@ -101,6 +101,10 @@
             hooks = {
               nixfmt.enable = true;
               rustfmt.enable = true;
+              typos = {
+                enable = true;
+                excludes = [ "^test/one_per_file/.*" "^test/one_per_line/.*" ];
+              };
             };
           };
         } // lib.optionalAttrs (system == "x86_64-linux") {

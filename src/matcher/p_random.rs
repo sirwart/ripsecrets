@@ -13,7 +13,7 @@ use memoize::memoize;
     3. Number of bigrams. If we take a sample of roughly 10% of possible bigrams that are common in source code, we should
        expect that a random string should have about 10% of those bigrams.
 
-    This math is probably not perfect, but it should be in the right ballpark and it's ultimately a hueristic so it should
+    This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
     be judged on how well it's able to distinguish random from non-random text.
 */
 pub fn p_random(s: &[u8]) -> f64 {
