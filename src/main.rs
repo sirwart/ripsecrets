@@ -1,3 +1,5 @@
+#![allow(clippy::needless_return)]
+
 use clap::Parser;
 use ripsecrets::find_secrets;
 use std::path::PathBuf;

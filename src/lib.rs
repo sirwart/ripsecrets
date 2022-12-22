@@ -1,3 +1,5 @@
+#![allow(clippy::needless_return)]
+
 use std::cmp;
 use std::error::Error;
 use std::fs;
@@ -9,7 +11,10 @@ use grep::printer;
 use grep::searcher::Searcher;
 use ignore::gitignore::Gitignore;
 use ignore::WalkBuilder;
-use termcolor::{BufferWriter, ColorChoice};
+use termcolor::BufferWriter;
+
+#[cfg(test)]
+use termcolor::ColorChoice;
 
 mod ignore_info;
 mod matcher;
@@ -77,7 +82,7 @@ pub fn find_secrets(
     if strict_ignore && ignore_info.ignore_matcher.is_some() {
         let ignore_matcher = ignore_info.ignore_matcher.unwrap();
         for path in paths {
-            if !is_ignored(&path, &ignore_matcher) {
+            if !is_ignored(path, &ignore_matcher) {
                 to_search.push(path.clone());
             }
         }
@@ -87,7 +92,7 @@ pub fn find_secrets(
         }
     }
 
-    if to_search.len() == 0 {
+    if to_search.is_empty() {
         return Ok(0);
     }
 
@@ -149,16 +154,14 @@ pub fn find_secrets(
 }
 
 fn is_ignored(path: &Path, ignore_matcher: &Gitignore) -> bool {
-    let parent = path.parent();
-    if parent.is_some() {
-        let parent_ignored = is_ignored(&parent.unwrap(), ignore_matcher);
+    if let Some(parent) = path.parent() {
+        let parent_ignored = is_ignored(parent, ignore_matcher);
         if parent_ignored {
             return true;
         }
     }
-    let metadata = fs::metadata(path);
-    if metadata.is_ok() {
-        let is_dir = metadata.unwrap().is_dir();
+    if let Ok(metadata) = fs::metadata(path) {
+        let is_dir = metadata.is_dir();
         if ignore_matcher.matched(path, is_dir).is_ignore() {
             return true;
         }
