@@ -42,15 +42,15 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
             let components = ignore_contents
                 .split(SECRETS_SECTION_HEADER)
                 .collect::<Vec<&str>>();
-            if components[0].len() > 0 {
+            if !components[0].is_empty() {
                 let mut tmp_file = NamedTempFile::new()?;
                 tmp_file.write_all(components[0].as_bytes())?;
                 maybe_ignore_file_path = Some(PathBuf::from(tmp_file.path()));
                 maybe_ignore_matcher = Some(Gitignore::new(tmp_file.path()).0);
                 maybe_tmp_file = Some(tmp_file);
             }
-            for secret in components[1].split("\n") {
-                if secret.len() > 0 && secret.chars().nth(0).unwrap() != '#' {
+            for secret in components[1].split('\n') {
+                if !secret.is_empty() && !secret.starts_with('#') {
                     // lines start with a # are comments
 
                     ignore_secrets.insert(Vec::from(secret.as_bytes()));
@@ -64,7 +64,7 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
     return Ok(IgnoreInfo {
         ignore_file_path: maybe_ignore_file_path,
         ignore_matcher: maybe_ignore_matcher,
-        ignore_secrets: ignore_secrets,
+        ignore_secrets,
         _tmp_file: maybe_tmp_file,
     });
 }

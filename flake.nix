@@ -79,9 +79,16 @@
 
         # `nix flake check`
         checks = {
+          audit = craneLib.cargoAudit { inherit src advisory-db; };
+
+          clippy = craneLib.cargoClippy {
+            inherit cargoArtifacts src buildInputs;
+            cargoClippyExtraArgs = "--all-targets -- --deny warnings";
+          };
+
           doc = craneLib.cargoDoc { inherit cargoArtifacts src; };
 
-          audit = craneLib.cargoAudit { inherit src advisory-db; };
+          fmt = craneLib.cargoFmt { inherit src; };
 
           nextest = craneLib.cargoNextest {
             inherit cargoArtifacts src buildInputs;
@@ -94,6 +101,10 @@
             hooks = {
               nixfmt.enable = true;
               rustfmt.enable = true;
+              typos = {
+                enable = true;
+                excludes = [ "^test/one_per_file/.*" "^test/one_per_line/.*" ];
+              };
             };
           };
         } // lib.optionalAttrs (system == "x86_64-linux") {
@@ -108,7 +119,7 @@
           inherit (self.checks.${system}.pre-commit) shellHook;
           inputsFrom = builtins.attrValues self.checks;
           buildInputs = buildInputs
-            ++ (with pkgs; [ cargo nixfmt rustc rustfmt ]);
+            ++ (with pkgs; [ cargo clippy nixfmt rustc rustfmt ]);
           nativeBuildInputs = with pkgs;
             lib.optionals (system == "x86_64-linux") [ cargo-tarpaulin ];
         };

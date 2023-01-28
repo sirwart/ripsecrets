@@ -42,7 +42,7 @@ fn is_random(to_test: &[u8]) -> bool {
     }
     let mut contains_num = false;
     for b in to_test {
-        if *b >= '0' as u8 && *b <= '9' as u8 {
+        if *b >= b'0' && *b <= b'9' {
             contains_num = true;
             break;
         }
