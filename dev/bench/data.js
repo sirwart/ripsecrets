@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675294721688,
+  "lastUpdate": 1675294973960,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -239,6 +239,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 8034800178,
             "range": "± 197457494",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "me@adamj.eu",
+            "name": "Adam Johnson",
+            "username": "adamchainz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c78e9b14a99823c3a660debe1d3464e8c16f5561",
+          "message": "Improve pre-commit framework docs (#58)",
+          "timestamp": "2023-02-01T15:34:52-08:00",
+          "tree_id": "ffb31999ed0af590e1874ad48fea32ea0e2dd551",
+          "url": "https://github.com/sirwart/ripsecrets/commit/c78e9b14a99823c3a660debe1d3464e8c16f5561"
+        },
+        "date": 1675294972706,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 10107360077,
+            "range": "± 396747068",
             "unit": "ns/iter"
           }
         ]
