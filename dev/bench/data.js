@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1674934936868,
+  "lastUpdate": 1675294721688,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -209,6 +209,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 8247061672,
             "range": "± 116289404",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "me@adamj.eu",
+            "name": "Adam Johnson",
+            "username": "adamchainz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7b33cbeb529e6157988feb0842ad8abdf00dd379",
+          "message": "Fix some links in README (#59)",
+          "timestamp": "2023-02-01T15:32:09-08:00",
+          "tree_id": "f9dc84691fd66837538318f5fe5375daa7dc9b3c",
+          "url": "https://github.com/sirwart/ripsecrets/commit/7b33cbeb529e6157988feb0842ad8abdf00dd379"
+        },
+        "date": 1675294720807,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 8034800178,
+            "range": "± 197457494",
             "unit": "ns/iter"
           }
         ]
