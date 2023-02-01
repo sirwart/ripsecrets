@@ -83,30 +83,29 @@ $ nix profile install github:sirwart/ripsecrets
 
 ### Using `pre-commit`
 
-`ripsecrets` can work as a plugin for [pre-commit](https://pre-commit.com/) with
-the following configuration.
-
-There are two hooks provided:
-
-- `ripsecrets` - This hook requires having Cargo and a Rust compiler already installed.
-   See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more
-   information.
-- `ripsecrets-system` - This hook requires having `ripsecrets` installed and available
-   on through other means, e.g. your package manager or
-   [a prebuilt, binary release](https://github.com/sirwart/ripsecrets/releases)
-   otherwise on your PATH. This is ideal if you wish to avoid installing a Rust environment.
+`ripsecrets` works as a hook for [the pre-commit framework](https://pre-commit.com/).
+Add the following to your `.pre-commit-config.yaml` file:
 
 ```yaml
 repos:
--   repo: https://github.com/sirwart/ripsecrets.git
-    # Set your version, be sure to use the latest and update regularly or use 'main'
-    rev: v0.1.5
+-   repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.5  # Use latest tag on GitHub
     hooks:
-    # use this one when you have a rust environment available
     -   id: ripsecrets
-    # use this one when you will install ripsecrets with a package manager
-    # -   id: ripsecrets-system
 ```
+
+There are two hooks available:
+
+- `ripsecrets` (Recommended)
+
+   pre-commit will set up a Rust environment from scratch to compile and run ripsecrets.
+   See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more information.
+
+- `ripsecrets-system`
+
+   pre-commit will look for `ripsecrets` on your `PATH`.
+   This hook requires you to install ripsecrets separately, e.g. with your package manager or [a prebuilt binary release](https://github.com/sirwart/ripsecrets/releases).
+   Only recommended if you are happy making all repository users install `ripsecrets` manually.
 
 ## Ignoring secrets
 
