@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675294973960,
+  "lastUpdate": 1675438704939,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -269,6 +269,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 10107360077,
             "range": "± 396747068",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "me@adamj.eu",
+            "name": "Adam Johnson",
+            "username": "adamchainz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cce91ae1f38d18381e823eac61fd6bd749853519",
+          "message": "Fix handling of .secretsignore files without [secrets] (#61)\n\nFixes #60.",
+          "timestamp": "2023-02-03T07:31:42-08:00",
+          "tree_id": "37109a846a39d27630c1638158a731249a1ace23",
+          "url": "https://github.com/sirwart/ripsecrets/commit/cce91ae1f38d18381e823eac61fd6bd749853519"
+        },
+        "date": 1675438703834,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 7857193742,
+            "range": "± 206213557",
             "unit": "ns/iter"
           }
         ]
