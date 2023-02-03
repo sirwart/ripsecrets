@@ -57,7 +57,8 @@ pub fn get_ignore_info() -> Result<IgnoreInfo, Box<dyn Error>> {
                 }
             }
         } else {
-            maybe_ignore_file_path = Some(secrets_ignore_filename);
+            maybe_ignore_file_path = Some(secrets_ignore_filename.clone());
+            maybe_ignore_matcher = Some(Gitignore::new(secrets_ignore_filename.clone()).0);
         }
     }
 
