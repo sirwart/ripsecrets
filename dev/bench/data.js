@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675438704939,
+  "lastUpdate": 1678577001746,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -299,6 +299,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 7857193742,
             "range": "± 206213557",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "cba144e474490358e8b2e3134d16e00abd10e0e4",
+          "message": "Add detection for gitlab tokens (Fixes #62)",
+          "timestamp": "2023-03-11T15:15:47-08:00",
+          "tree_id": "71ddc7447d5995e0b360e6a19e8ae6e37ac15518",
+          "url": "https://github.com/sirwart/ripsecrets/commit/cba144e474490358e8b2e3134d16e00abd10e0e4"
+        },
+        "date": 1678577000189,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 8434982395,
+            "range": "± 554805898",
             "unit": "ns/iter"
           }
         ]
