@@ -3,7 +3,7 @@
     "A command-line tool to prevent committing secret keys into your source code";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
 
     crane = {
       url = "github:ipetkov/crane";
@@ -30,18 +30,20 @@
 
   outputs = { self, nixpkgs, crane, flake-utils, rust-overlay, advisory-db
     , pre-commit-hooks }:
-    flake-utils.lib.eachDefaultSystem (system:
+    {
+      overlays.default =
+        (final: prev: { inherit (self.packages.${final.system}) ripsecrets; });
+    } // flake-utils.lib.eachDefaultSystem (system:
       let
+        craneLib = crane.lib.${system};
+        src = craneLib.cleanCargoSource ./.;
+
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ (import rust-overlay) ];
         };
-        inherit (pkgs) lib;
 
-        craneLib = crane.lib.${system};
-        src = craneLib.cleanCargoSource ./.;
-
-        buildInputs = [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
+        buildInputs = [ ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
           # Additional darwin specific inputs can be set here
           pkgs.gcc
           pkgs.libiconv
@@ -51,31 +53,41 @@
         # all of that work (e.g. via cachix) when running in CI
         cargoArtifacts = craneLib.buildDepsOnly { inherit src buildInputs; };
 
-        # Build the ripsecrets itself, reusing the dependency artifacts from above.
+        # Build ripsecrets itself, reusing the dependency artifacts from above.
         ripsecrets = craneLib.buildPackage {
           inherit cargoArtifacts src buildInputs;
           doCheck = false;
+          meta = with pkgs.lib; {
+            description =
+              "A command-line tool to prevent committing secret keys into your source code";
+            homepage = "https://github.com/sirwart/ripsecrets";
+            maintainers = [ maintainers.lafrenierejm ];
+            license = licenses.mit;
+          };
         };
 
         pre-commit = pre-commit-hooks.lib."${system}".run;
-      in {
-        # `nix build`
-        packages.ripsecrets = ripsecrets;
-        packages.default = ripsecrets;
-
-        # `nix build .#oci`
-        packages.oci = pkgs.dockerTools.buildImage {
-          name = "ripsecrets";
-          tag = "latest";
-          config = {
-            Entrypoint = [ "${ripsecrets}/bin/ripsecrets" ];
-            WorkingDir = "/data";
-            Volumes = { "/data" = { }; };
+      in rec {
+        packages = flake-utils.lib.flattenTree {
+          # `nix build .#ripsecrets`
+          inherit ripsecrets;
+          # `nix build`
+          default = ripsecrets;
+          # Build an OCI image.
+          # `nix build .#ripsecrets-oci`
+          ripsecrets-oci = pkgs.dockerTools.buildImage {
+            name = "ripsecrets";
+            tag = "latest";
+            config = {
+              Entrypoint = [ "${ripsecrets}/bin/ripsecrets" ];
+              WorkingDir = "/data";
+              Volumes = { "/data" = { }; };
+            };
           };
         };
 
         # `nix run`
-        apps.default = flake-utils.lib.mkApp { drv = ripsecrets; };
+        apps.default = flake-utils.lib.mkApp { drv = packages.ripsecrets; };
 
         # `nix flake check`
         checks = {
@@ -107,7 +119,7 @@
               };
             };
           };
-        } // lib.optionalAttrs (system == "x86_64-linux") {
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           # NB: cargo-tarpaulin only supports x86_64 systems
           # Check code coverage (note: this will not upload coverage anywhere)
           ripsecrets-coverage =
