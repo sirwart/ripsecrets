@@ -99,6 +99,7 @@
           pre-commit = pre-commit {
             src = ./.;
             hooks = {
+              editorconfig-checker.enable = true;
               nixfmt.enable = true;
               rustfmt.enable = true;
               typos = {
