@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1678577001746,
+  "lastUpdate": 1682345006149,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -329,6 +329,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 8434982395,
             "range": "± 554805898",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "joseph@lafreniere.xyz",
+            "name": "Joseph M LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b1283ffaa8400e2da0a06994067de6d979a1f0eb",
+          "message": "Add `editorconfig-check` pre-commit hook (#57)\n\nSee https://github.com/editorconfig-checker/editorconfig-checker for more information.\r\n\r\nDepends on #56.",
+          "timestamp": "2023-04-24T06:56:59-07:00",
+          "tree_id": "226326f3fa633839ccda4f851d6385df384b26e7",
+          "url": "https://github.com/sirwart/ripsecrets/commit/b1283ffaa8400e2da0a06994067de6d979a1f0eb"
+        },
+        "date": 1682345005421,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 7182943266,
+            "range": "± 314078934",
             "unit": "ns/iter"
           }
         ]
