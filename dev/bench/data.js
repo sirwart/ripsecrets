@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1682345125657,
+  "lastUpdate": 1682984575563,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -389,6 +389,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 7095184368,
             "range": "± 167096154",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sschlinkert@gmail.com",
+            "name": "Sam Schlinkert",
+            "username": "sts10"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ac370a9783efc488358242b6f78e8e10912e5361",
+          "message": "upgrades clap dependency (#65)\n\nClap recently got into v4.X.X, so I figured it'd be nice to get ripsecrets using the current up-to-date version, v4.2.5. Required only a minor tweak to reach functional parity with 3.X.X. Should work exactly the same after this PR.",
+          "timestamp": "2023-05-01T16:33:31-07:00",
+          "tree_id": "543fc59c155fd6a53e8050ba1d649d969a962939",
+          "url": "https://github.com/sirwart/ripsecrets/commit/ac370a9783efc488358242b6f78e8e10912e5361"
+        },
+        "date": 1682984574002,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 11440769273,
+            "range": "± 539894505",
             "unit": "ns/iter"
           }
         ]
