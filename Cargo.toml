@@ -16,7 +16,7 @@ regex = "1.1"
 termcolor = "1.1.2"
 memoize = "0.3.0"
 tempfile = "3.3.0"
-clap = { version = "3.1.10", features = ["derive"] }
+clap = { version = "4.2.5", features = ["derive"] }
 
 [dev-dependencies]
 criterion = { version = "0.3", features = ["html_reports"] }

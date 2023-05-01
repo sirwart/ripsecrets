@@ -45,7 +45,7 @@ struct Args {
     only_matching: bool,
 
     /// Source files. Can be files or directories. Defaults to '.'
-    #[clap(name = "Source files", parse(from_os_str))]
+    #[clap(name = "Source files")]
     paths: Vec<PathBuf>,
 }
 
