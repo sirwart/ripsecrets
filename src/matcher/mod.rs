@@ -13,7 +13,7 @@ pub struct IgnoringMatcher {
     regex: Regex,
     ignore_regex: Regex,
     random_string_regex: Regex,
-
+    hex_pattern: Regex,
     ignore_secrets: HashSet<Vec<u8>>, // A set of secrets that have been declared in the .secretsignore to ignore
 }
 
@@ -26,10 +26,12 @@ impl IgnoringMatcher {
         let ignore_regex =
             RegexBuilder::new("[^\\n]*pragma: allowlist secret[^\\n]*(?:\\n|$)").build()?;
         let random_string_regex = RegexBuilder::new(RANDOM_STRING_REGEX).build()?;
+        let hex_pattern = Regex::new(r"^[0-9a-fA-F]{16,}$")?;
         Ok(IgnoringMatcher {
             regex,
             ignore_regex,
             random_string_regex,
+            hex_pattern,
             ignore_secrets,
         })
     }
@@ -91,9 +93,10 @@ impl Matcher for IgnoringMatcher {
                             if random.is_some() && random.unwrap().start() == m.start() {
                                 let str_pos = random_locs.get(1).unwrap();
                                 let potential_random_string = &haystack[str_pos.0..str_pos.1];
+                                let is_hex = self.hex_pattern.is_match(potential_random_string);
 
                                 if self.ignore_secrets.contains(potential_random_string)
-                                    || !is_random(potential_random_string)
+                                    || (!is_random(potential_random_string) && !is_hex)
                                 {
                                     pos = m.end();
                                     continue; // advance past this since we want to ignore
