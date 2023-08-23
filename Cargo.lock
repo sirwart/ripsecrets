@@ -785,6 +785,7 @@ dependencies = [
  "criterion",
  "grep",
  "ignore",
+ "lazy_static",
  "memoize",
  "num_cpus",
  "regex",

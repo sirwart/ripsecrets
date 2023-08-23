@@ -1,7 +1,12 @@
 use std::collections::hash_map::HashMap;
 use std::collections::hash_set::HashSet;
+use regex::bytes::Regex;
 
 use memoize::memoize;
+
+lazy_static::lazy_static! {
+    static ref RANDOM_STRING_REGEX: Regex = Regex::new("^[0-9a-fA-F]{16,}$").unwrap();
+}
 
 /// When we get a potential secret that doesn't match any known secret patterns, we need to make some determination of
 /// whether it's a random string or not. To do that we assume it's random, and then calculate the probability that a few
@@ -15,7 +20,13 @@ use memoize::memoize;
 /// This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
 /// be judged on how well it's able to distinguish random from non-random text.
 pub fn p_random(s: &[u8]) -> f64 {
-    return p_random_distinct_values(s) * p_random_char_class(s) * p_random_bigrams(s);
+    let base = if RANDOM_STRING_REGEX.is_match(s) { 16.0 } else { 64.0 };
+    let mut p = p_random_distinct_values(s, base) * p_random_char_class(s, base);
+    if base == 64.0 {
+        // right now the bigrams are only calibrated for base64
+        p *= p_random_bigrams(s);
+    }
+    return p;
 }
 
 fn p_random_bigrams(s: &[u8]) -> f64 {
@@ -37,14 +48,14 @@ fn p_random_bigrams(s: &[u8]) -> f64 {
     );
 }
 
-fn p_random_char_class(s: &[u8]) -> f64 {
+fn p_random_char_class(s: &[u8], base: f64) -> f64 {
     let mut num_numbers = 0;
     for b in s {
         if *b >= b'0' && *b < b'9' {
             num_numbers += 1;
         }
     }
-    return p_binomial(s.len(), num_numbers, 10.0 / 64.0);
+    return p_binomial(s.len(), num_numbers, 10.0 / base);
 }
 
 fn p_binomial(n: usize, x: usize, p: f64) -> f64 {
@@ -69,12 +80,12 @@ fn factorial(n: usize) -> f64 {
     return res;
 }
 
-fn p_random_distinct_values(s: &[u8]) -> f64 {
-    let total_possible: f64 = 64_f64.powi(s.len() as i32);
+fn p_random_distinct_values(s: &[u8], base: f64) -> f64 {
+    let total_possible: f64 = base.powi(s.len() as i32);
     let num_distinct_values = count_distinct_values(s);
     let mut num_more_extreme_outcomes: f64 = 0.0;
     for i in 1..=num_distinct_values {
-        num_more_extreme_outcomes += num_possible_outcomes(s.len(), i, 64);
+        num_more_extreme_outcomes += num_possible_outcomes(s.len(), i, base as usize);
     }
     return num_more_extreme_outcomes / total_possible;
 }
@@ -133,8 +144,8 @@ fn test_p_random_distinct_values() {
     assert_eq!(num_distinct_configurations(6, 4), 65.0);
     assert_eq!(num_possible_outcomes(32, 1, 64), 64.0);
 
-    assert!(p_random_distinct_values(b"aaaaaaaaa") < 1.0 / 1e6);
-    assert!(p_random_distinct_values(b"abcdefghi") > 1.0 / 1e6);
+    assert!(p_random_distinct_values(b"aaaaaaaaa", 64.0) < 1.0 / 1e6);
+    assert!(p_random_distinct_values(b"abcdefghi", 64.0) > 1.0 / 1e6);
 }
 
 #[test]
