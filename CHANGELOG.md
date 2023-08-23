@@ -1,3 +1,9 @@
+## 0.1.6 (2023-08-22)
+
+- Fix handling of .secretsignore files without [secrets] section (#61)
+- Add detection for gitlab tokens (Fixes #62)
+- Better detection of hex secrets
+
 ## 0.1.5 (2022-06-26)
 
 - Fix excessive false positives from random string detection

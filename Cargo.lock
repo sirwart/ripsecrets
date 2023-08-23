@@ -779,7 +779,7 @@ dependencies = [
 
 [[package]]
 name = "ripsecrets"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "clap 4.2.5",
  "criterion",
