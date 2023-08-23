@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1682984575563,
+  "lastUpdate": 1692750451522,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -419,6 +419,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 11440769273,
             "range": "± 539894505",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "a796ea541383f275f442fc4d0e2cf86e64a8a84b",
+          "message": "Better detection of hex secrets\n\nWhen determining whether a string is random or not, it previously\nalways assumed that the string was picked from a vocabulary of 64\ncharacters, which made hex secrets look non-random even if they\nare. This adjusts the randomness calculation to use an appropriate\nvocab size for hex strings.",
+          "timestamp": "2023-08-22T17:16:13-07:00",
+          "tree_id": "20f6eebdb02b0c0199d4e940e4d92b121272a002",
+          "url": "https://github.com/sirwart/ripsecrets/commit/a796ea541383f275f442fc4d0e2cf86e64a8a84b"
+        },
+        "date": 1692750450560,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 7303028695,
+            "range": "± 669701077",
             "unit": "ns/iter"
           }
         ]
