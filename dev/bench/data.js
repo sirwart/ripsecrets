@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1692753945709,
+  "lastUpdate": 1694397986878,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -479,6 +479,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 7520850954,
             "range": "± 701739646",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "ac2aeb05a067877c675191b6c3760e8b0df783de",
+          "message": "Add detection for secrets in database connection strings and other URLs",
+          "timestamp": "2023-09-10T18:59:32-07:00",
+          "tree_id": "d10c69f2edbeabb385c032e96aa7d7a7d2c65289",
+          "url": "https://github.com/sirwart/ripsecrets/commit/ac2aeb05a067877c675191b6c3760e8b0df783de"
+        },
+        "date": 1694397986342,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 698757443,
+            "range": "± 4392101",
             "unit": "ns/iter"
           }
         ]
