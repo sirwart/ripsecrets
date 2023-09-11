@@ -35,6 +35,7 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#,             // square
         "AIzaSy[A-Za-z0-9-_]{33}",                    // gcp api key
         "glpat-[A-Za-z0-9_/-]{20,}",                  // gitlab
+        "[A-Za-z]+://[A-Za-z0-9-_.~%]+:([A-Za-z0-9-_.~%]+)@[A-Za-z]+\\.[A-Za-z0-9]+", // URLs with passwords
         // Private keys
         "AGE-SECRET-KEY-[A-Z0-9]{59}", // age secret key
         "-----BEGIN DSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",

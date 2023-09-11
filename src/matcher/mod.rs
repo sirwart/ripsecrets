@@ -12,7 +12,6 @@ pub const RANDOM_STRING_REGEX: &str = r#"(?:secret|token|key|password|Secret|SEC
 pub struct IgnoringMatcher {
     regex: Regex,
     ignore_regex: Regex,
-    random_string_regex: Regex,
 
     ignore_secrets: HashSet<Vec<u8>>, // A set of secrets that have been declared in the .secretsignore to ignore
 }
@@ -25,11 +24,9 @@ impl IgnoringMatcher {
         let regex = RegexBuilder::new(pattern).build()?;
         let ignore_regex =
             RegexBuilder::new("[^\\n]*pragma: allowlist secret[^\\n]*(?:\\n|$)").build()?;
-        let random_string_regex = RegexBuilder::new(RANDOM_STRING_REGEX).build()?;
         Ok(IgnoringMatcher {
             regex,
             ignore_regex,
-            random_string_regex,
             ignore_secrets,
         })
     }
@@ -60,13 +57,23 @@ impl Matcher for IgnoringMatcher {
     fn find_at(&self, haystack: &[u8], at: usize) -> Result<Option<Match>, NoError> {
         let mut pos = at;
         while pos < haystack.len() {
-            let m = self
+            let captures = self
                 .regex
-                .find_at(haystack, pos)
-                .map(|m| Match::new(m.start(), m.end()));
-            match m {
+                .captures_at(haystack, pos);
+            match captures {
                 None => return Ok(None),
-                Some(m) => {
+                Some(captures) => {
+                    let mut m = captures.get(0).unwrap();
+                    let mut is_submatch = false;
+                    // Want to skip over the 0th (the entire match) and the 1st (the giant | statement of all patterns)
+                    for i in 2..captures.len() {
+                        if let Some(sub_match) = captures.get(i) {
+                            m = sub_match;
+                            is_submatch = true;
+                            break;
+                        }
+                    }
+
                     if self.ignore_secrets.contains(&haystack[m.start()..m.end()]) {
                         pos = m.end();
                         continue;
@@ -80,31 +87,19 @@ impl Matcher for IgnoringMatcher {
                         }
                         None => {
                             // If we matched on the random string detector check to make sure it's actually a random string
-                            // TODO: Don't run another regex, since that can mask secrets.
-                            //       Instead look at the capture location of the original regex
-                            let mut random_locs = self.random_string_regex.capture_locations();
-                            let random = self.random_string_regex.captures_read_at(
-                                &mut random_locs,
-                                haystack,
-                                m.start(),
-                            );
-                            if random.is_some() && random.unwrap().start() == m.start() {
-                                let str_pos = random_locs.get(1).unwrap();
-                                let potential_random_string = &haystack[str_pos.0..str_pos.1];
-
-                                if self.ignore_secrets.contains(potential_random_string)
-                                    || !is_random(potential_random_string)
-                                {
+                            if is_submatch {
+                                let potential_random_string = m.as_bytes();
+                                if !is_random(potential_random_string) {
                                     pos = m.end();
                                     continue; // advance past this since we want to ignore
                                 } else {
                                     // If we did hit the random string regex, we want to count the secret matched
                                     // As only the secret matched, not the entire regex match. This becomes especially
                                     // important when using the --only-matching option
-                                    return Ok(Some(Match::new(str_pos.0, str_pos.1)));
+                                    return Ok(Some(Match::new(m.start(), m.end())));
                                 }
                             }
-                            return Ok(Some(m));
+                            return Ok(Some(Match::new(m.start(), m.end())));
                         }
                     }
                 }

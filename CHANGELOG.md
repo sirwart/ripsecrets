@@ -1,3 +1,8 @@
+## 0.1.7 (Not yet released)
+
+- Add detection for secrets in secrets in database connection strings
+  and other URLs.
+
 ## 0.1.6 (2023-08-22)
 
 - Fix handling of .secretsignore files without [secrets] section (#61)
