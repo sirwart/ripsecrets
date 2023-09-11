@@ -2,6 +2,8 @@
 
 - Add detection for secrets in database connection strings and other URLs
 - Fewer false positives for non-random strings assigned to a secret
+- Support additional secret regex patterns using the --additional-pattern
+  argument
 
 ## 0.1.6 (2023-08-22)
 

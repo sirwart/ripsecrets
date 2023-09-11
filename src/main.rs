@@ -44,6 +44,12 @@ struct Args {
     #[clap(long = "only-matching")]
     only_matching: bool,
 
+    /// Additional regex patterns used to find secrets. If there is a matching
+    /// group in the regex the matched group will be tested for randomness before
+    /// being reported as a secret.
+    #[clap(long = "additional-pattern")]
+    additional_patterns: Vec<String>,
+
     /// Source files. Can be files or directories. Defaults to '.'
     #[clap(name = "Source files")]
     paths: Vec<PathBuf>,
@@ -106,6 +112,7 @@ fn run() -> RunResult {
     } else {
         match find_secrets(
             &paths,
+            &args.additional_patterns,
             args.strict_ignore,
             args.only_matching,
             BufferWriter::stdout(ColorChoice::Never),

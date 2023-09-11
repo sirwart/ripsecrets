@@ -64,12 +64,20 @@ fn combined_regex(regexes: &[&str]) -> String {
 
 pub fn find_secrets(
     paths: &[PathBuf],
+    additional_patterns: &[String],
     strict_ignore: bool,
     only_matching: bool,
     writer: BufferWriter,
 ) -> Result<usize, Box<dyn Error>> {
-    let predefined = predefined_secret_regexes();
-    let combined = combined_regex(&predefined);
+    let predefined_patterns = predefined_secret_regexes();
+
+    let mut all_patterns: Vec<&str> = Vec::with_capacity(predefined_patterns.len() + additional_patterns.len());
+    all_patterns.extend(predefined_patterns.iter());
+    for p in additional_patterns {
+        all_patterns.push(p.as_str());
+    }
+
+    let combined = combined_regex(&all_patterns);
 
     let ignore_info = ignore_info::get_ignore_info()?;
 
@@ -180,6 +188,7 @@ mod tests {
     fn no_false_positives() {
         let res = find_secrets(
             &[PathBuf::from("test/none")],
+            &[],
             false,
             false,
             BufferWriter::stdout(ColorChoice::Never),
@@ -194,6 +203,7 @@ mod tests {
             let contents = fs::read_to_string(entry.path()).unwrap();
             let res = find_secrets(
                 &[entry.path()],
+                &[],
                 false,
                 false,
                 BufferWriter::stdout(ColorChoice::Never),
@@ -209,6 +219,7 @@ mod tests {
             let entry = maybe_entry.unwrap();
             let res = find_secrets(
                 &[entry.path()],
+                &[],
                 false,
                 false,
                 BufferWriter::stdout(ColorChoice::Never),
@@ -221,6 +232,7 @@ mod tests {
     fn strict_ignore_works() {
         let res = find_secrets(
             &[PathBuf::from("test")],
+            &[],
             true,
             false,
             BufferWriter::stdout(ColorChoice::Never),
@@ -232,6 +244,7 @@ mod tests {
                 PathBuf::from("test/one_per_line/aws"),
                 PathBuf::from("test/one_per_line/azure"),
             ],
+            &[],
             true,
             false,
             BufferWriter::stdout(ColorChoice::Never),

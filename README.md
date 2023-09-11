@@ -125,6 +125,18 @@ In addition to the .secretsignore file, `ripsecrets` is compatible with `detect-
 test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 ```
 
+## Finding custom secrets
+
+In some cases, you may have a custom secret that's not recognized by `ripsecrets`. To detect these, call `ripsecrets` with the `--additional-pattern` argument:
+
+```
+ripsecrets --additional-pattern my-secret-\*
+```
+
+Any matching groups in the regex will be tested for randomness before being reported as a secret. If you do not want this behavior use non-matching groups in your regex. For example instead of `(foo|bar)` use `(?:foo|bar)`.
+
+If the secret pattern you're trying to detect is a publicly documented secret pattern please open [an issue](https://github.com/sirwart/ripsecrets/issues/new).
+
 ## How it works
 
  `ripsecrets` has 2 types of secrets that it can find in code:
