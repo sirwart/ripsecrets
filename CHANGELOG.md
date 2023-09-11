@@ -1,7 +1,7 @@
 ## 0.1.7 (Not yet released)
 
-- Add detection for secrets in secrets in database connection strings
-  and other URLs.
+- Add detection for secrets in database connection strings and other URLs
+- Fewer false positives for non-random strings assigned to a secret
 
 ## 0.1.6 (2023-08-22)
 

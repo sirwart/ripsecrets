@@ -7,3 +7,4 @@ return keyJob.start() # can look like a JWT due to containing eyJ
 WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 req.POST = {"head_long": "v999", "url": "http://example.com", "user": "wrong@example.com"}
 http://public:secret@example.com/1
+project_key = PROJECT_NAME_ALIAS

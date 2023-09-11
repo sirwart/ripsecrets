@@ -49,13 +49,36 @@ fn p_random_bigrams(s: &[u8]) -> f64 {
 }
 
 fn p_random_char_class(s: &[u8], base: f64) -> f64 {
-    let mut num_numbers = 0;
+    // Look at the 3 main char classes (uppercase, lowercase, and numbers) if it's not hex and pick the
+    // least probable one
+    if base == 16.0 {
+        return p_random_char_class_aux(s, b'0', b'9', 16.0);
+    } else {
+        let mut min_p = f64::INFINITY;
+        let char_classes = [
+            (b'0', b'9'),
+            (b'A', b'Z'),
+            (b'a', b'z'),
+        ];
+        for (min, max) in char_classes {
+            let p = p_random_char_class_aux(s, min, max, base);
+            if p < min_p {
+                min_p = p;
+            }
+        }
+        return min_p;
+    }
+}
+
+fn p_random_char_class_aux(s: &[u8], min: u8, max: u8, base: f64) -> f64 {
+    let mut count = 0;
     for b in s {
-        if *b >= b'0' && *b < b'9' {
-            num_numbers += 1;
+        if *b >= min && *b < max {
+            count += 1
         }
     }
-    return p_binomial(s.len(), num_numbers, 10.0 / base);
+    let num_chars = (max - min + 1) as f64;
+    return p_binomial(s.len(), count, num_chars / base);
 }
 
 fn p_binomial(n: usize, x: usize, p: f64) -> f64 {
@@ -160,4 +183,5 @@ fn test_p_random() {
     assert!(p_random(b"hello_world") < 1.0 / 1e6);
     assert!(p_random(b"pk_test_TYooMQauvdEDq54NiTphI7jx") > 1.0 / 1e4);
     assert!(p_random(b"sk_test_4eC39HqLyjWDarjtT1zdp7dc") > 1.0 / 1e4);
+    assert!(p_random(b"PROJECT_NAME_ALIAS") < 1.0 / 1e4); // Ideally this would fall under 1e6 but the probabilities don't work out at the moment
 }
