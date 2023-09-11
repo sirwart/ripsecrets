@@ -89,7 +89,7 @@ Add the following to your `.pre-commit-config.yaml` file:
 ```yaml
 repos:
 -   repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.5  # Use latest tag on GitHub
+    rev: v0.1.7  # Use latest tag on GitHub
     hooks:
     -   id: ripsecrets
 ```

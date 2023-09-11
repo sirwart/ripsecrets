@@ -1,4 +1,4 @@
-## 0.1.7 (Not yet released)
+## 0.1.7 (2023-09-11)
 
 - Add detection for secrets in database connection strings and other URLs
 - Fewer false positives for non-random strings assigned to a secret
