@@ -76,16 +76,13 @@ pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
 
 fn write_pre_commit_file(path: &Path) -> Result<(), Box<dyn Error>> {
     fs::write(path, PRE_COMMIT)?;
-    set_pre_commit_permissions(path);
+
+    #[cfg(unix)]
+    {
+        let mut perms = fs::metadata(path)?.permissions();
+        perms.set_mode(perms.mode() | 0o100);
+        let _ = fs::set_permissions(path, perms);
+    }
+
     return Ok(());
 }
-
-#[cfg(unix)]
-fn set_pre_commit_permissions(path: &Path) {
-    let mut perms = fs::metadata(path)?.permissions();
-    perms.set_mode(perms.mode() | 0o100);
-    fs::set_permissions(path, perms)?;
-}
-
-#[cfg(not(unix))]
-fn set_pre_commit_permissions(_path: &Path) {}
