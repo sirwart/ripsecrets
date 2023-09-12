@@ -3,6 +3,7 @@ use std::fmt;
 use std::fs;
 use std::fs::OpenOptions;
 use std::io::Write;
+#[cfg(unix)]
 use std::os::unix::fs::PermissionsExt;
 use std::path::Path;
 
@@ -75,9 +76,16 @@ pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
 
 fn write_pre_commit_file(path: &Path) -> Result<(), Box<dyn Error>> {
     fs::write(path, PRE_COMMIT)?;
+    set_pre_commit_permissions(path);
+    return Ok(());
+}
+
+#[cfg(unix)]
+fn set_pre_commit_permissions(path: &Path) {
     let mut perms = fs::metadata(path)?.permissions();
     perms.set_mode(perms.mode() | 0o100);
     fs::set_permissions(path, perms)?;
-
-    return Ok(());
 }
+
+#[cfg(not(unix))]
+fn set_pre_commit_permissions(_path: &Path) {}
