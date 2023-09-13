@@ -12,7 +12,7 @@
 
 2. **Extremely fast**. Using a secret scanner shouldn't slow down your development workflow, so `ripsecrets` is 95 times faster or more than other tools. [Learn more about how it's designed for performance](#performance).
 
-3. **Always local operation**. Many other secret scanners try to verify that the secrets are valid, which is practice means sending strings from your source code to 3rd party services automatically. There's a security versus convenience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
+3. **Always local operation**. Many other secret scanners try to verify that the secrets are valid, which in practice means sending strings from your source code to 3rd party services automatically. There's a security versus convenience tradeoff in that decision, but `ripsecrets` is designed to be the best "local only" tool and will never send data off of your computer.
 
 4. **Low rate of false positives**. While local-only tools are always going to have more false positives than one that verifies secrets, `ripsecrets` uses a probability theory based approach in order to detect keys more accurately than other tools.
 
@@ -26,7 +26,7 @@ By default, running `ripsecrets` will recursively search source files in your cu
 $ ripsecrets
 ```
 
-For every secret it finds it will print out the file, line number, and the secret that was found. If it finds any secrets it will exit with a non-zero status code.
+For every secret it finds, it will print out the file, line number, and the secret that was found. If it finds any secrets, it will exit with a non-zero status code.
 
 You can optionally pass a list of files and directories to search as arguments.
 
@@ -92,6 +92,10 @@ repos:
     rev: v0.1.7  # Use latest tag on GitHub
     hooks:
     -   id: ripsecrets
+        # uncomment to check additional patterns 
+        # args:
+        # - --additional-pattern 'mytoken*'
+        # - --additional-pattern 'mykey*'
 ```
 
 There are two hooks available:
@@ -104,12 +108,12 @@ There are two hooks available:
 - `ripsecrets-system`
 
    pre-commit will look for `ripsecrets` on your `PATH`.
-   This hook requires you to install ripsecrets separately, e.g. with your package manager or [a prebuilt binary release](https://github.com/sirwart/ripsecrets/releases).
-   Only recommended if you are happy making all repository users install `ripsecrets` manually.
+   This hook requires you to install ripsecrets separately, e.g., with your package manager or [a prebuilt binary release](https://github.com/sirwart/ripsecrets/releases).
+   It is only recommended if you are happy making all repository users install `ripsecrets` manually.
 
 ## Ignoring secrets
 
-`ripsecrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also supports a `[secrets]` section that allows ignoring individual secrets.
+`ripsecrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that, you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also supports a `[secrets]` section that allows ignoring individual secrets.
 
 ```
 test/*
@@ -133,9 +137,9 @@ In some cases, you may have a custom secret that's not recognized by `ripsecrets
 ripsecrets --additional-pattern my-secret-\*
 ```
 
-Any matching groups in the regex will be tested for randomness before being reported as a secret. If you do not want this behavior use non-matching groups in your regex. For example instead of `(foo|bar)` use `(?:foo|bar)`.
+Any matching groups in the regex will be tested for randomness before being reported as a secret. If you do not want this behavior, use non-matching groups in your regex. For example instead of `(foo|bar)` use `(?:foo|bar)`.
 
-If the secret pattern you're trying to detect is a publicly documented secret pattern please open [an issue](https://github.com/sirwart/ripsecrets/issues/new).
+If the secret pattern you're trying to detect is a publicly documented secret pattern, please open [an issue](https://github.com/sirwart/ripsecrets/issues/new).
 
 ## How it works
 
@@ -151,13 +155,13 @@ If you find either a false negative (a secret that wasn't found by `ripsecrets`)
 
 ## Performance
 
-The slowest part of secret scanning is looking for potential secrets in a large number of files. To do this quickly `ripsecrets` does a couple of things:
+The slowest part of secret scanning is looking for potential secrets in a large number of files. To do this quickly, `ripsecrets` does a couple of things:
 
 1. All the secret patterns are compiled into a single regex, so each file only needs to be processed once.
 
-2. This regex is fed to [ripgrep](https://github.com/BurntSushi/ripgrep), which is specially optimized to running a regex against a large number of files quickly.
+2. This regex is fed to [ripgrep](https://github.com/BurntSushi/ripgrep), which is specially optimized for running a regex against a large number of files quickly.
 
-Additionally, `ripsecrets` is written in Rust, which means there's no interpreter startup time. To compare real world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
+Additionally, `ripsecrets` is written in Rust, which means there's no interpreter startup time. To compare real-world performance, here's the runtime of a few different scanning tools to search for secrets in the [Sentry repo](https://github.com/getsentry/sentry) on an M1 air laptop:
 
 | tool           | avg. runtime | vs. baseline |
 | -------------- | ------------ | ------------ |
@@ -165,7 +169,7 @@ Additionally, `ripsecrets` is written in Rust, which means there's no interprete
 | trufflehog     | 31.2s        | 95x          |
 | detect-secrets | 73.5s        | 226x         |
 
-Most of the time, your pre-commit will be running on a small number of files, so the runtimes above are not typical, but when working with large commits that touch a lot of files the runtime can become noticeable.
+Most of the time, your pre-commit will be running on a small number of files, so the runtimes above are not typical, but when working with large commits that touch a lot of files, the runtime can become noticeable.
 
 ## Running benchmarks
 
