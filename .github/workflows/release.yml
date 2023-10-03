@@ -58,7 +58,7 @@ jobs:
         uses: cachix/install-nix-action@v18
 
       - name: Build the OCI tar.gz
-        run: nix build .#oci
+        run: nix build .#ripsecrets-oci
 
       - name: Temporarily save the OCI archive
         uses: actions/upload-artifact@v3
