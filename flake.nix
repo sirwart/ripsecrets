@@ -112,6 +112,7 @@
             src = ./.;
             hooks = {
               editorconfig-checker.enable = true;
+              markdownlint.enable = true;
               nixfmt.enable = true;
               rustfmt.enable = true;
               typos = {
