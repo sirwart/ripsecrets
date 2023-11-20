@@ -71,7 +71,8 @@ pub fn find_secrets(
 ) -> Result<usize, Box<dyn Error>> {
     let predefined_patterns = predefined_secret_regexes();
 
-    let mut all_patterns: Vec<&str> = Vec::with_capacity(predefined_patterns.len() + additional_patterns.len());
+    let mut all_patterns: Vec<&str> =
+        Vec::with_capacity(predefined_patterns.len() + additional_patterns.len());
     all_patterns.extend(predefined_patterns.iter());
     for p in additional_patterns {
         all_patterns.push(p.as_str());

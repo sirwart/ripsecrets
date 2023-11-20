@@ -22,8 +22,12 @@ pub enum UsageError {
     about,
     name = "ripsecrets",
     long_about = "ripsecrets searches files and directories recursively for secret API keys.
-It's primarily designed to be used as a pre-commit to prevent committing
-secrets into version control."
+
+ripsecrets is primarily designed to be used as a pre-commit to prevent committing secrets into version control.
+
+For every secret it finds, ripsecrets will print out the file, line number, and the secret that was found.  If ripsecrets finds any secrets, it will exit with a non-zero status code.
+
+You can optionally pass a list of files and directories to search as arguments.  This is most commonly used to search files that are about to be committed to source control for accidentally included secrets."
 )]
 struct Args {
     /// Install `ripsecrets` as a pre-commit hook automatically in git directory provided. Defaults to
