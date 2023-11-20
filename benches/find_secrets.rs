@@ -15,6 +15,7 @@ fn criterion_benchmark(c: &mut Criterion) {
         b.iter(|| {
             find_secrets(
                 black_box(paths),
+                &[],
                 false,
                 false,
                 BufferWriter::stderr(ColorChoice::Never),

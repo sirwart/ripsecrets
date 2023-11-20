@@ -127,7 +127,7 @@ fn num_possible_outcomes(num_values: usize, num_distinct_values: usize, base: us
     for i in 1..num_distinct_values {
         res *= (base - i) as f64;
     }
-    res *= num_distinct_configurations(num_values, num_distinct_values) as f64;
+    res *= num_distinct_configurations(num_values, num_distinct_values);
     return res;
 }
 

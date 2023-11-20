@@ -32,7 +32,7 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "AccountKey=[a-zA-Z0-9+/=]{88}",              // azure storage
         "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}", // sendgrid
         "[0-9a-z]{32}-us[0-9]{1,2}",                  // mailchimp
-        r#"sq0csp-[0-9A-Za-z\\\-_]{43}"#,             // square
+        r"sq0csp-[0-9A-Za-z\\\-_]{43}",               // square
         "AIzaSy[A-Za-z0-9-_]{33}",                    // gcp api key
         "glpat-[A-Za-z0-9_/-]{20,}",                  // gitlab
         "[A-Za-z]+://[A-Za-z0-9-_.~%]+:([A-Za-z0-9-_.~%]+)@[A-Za-z]+\\.[A-Za-z0-9]+", // URLs with passwords
