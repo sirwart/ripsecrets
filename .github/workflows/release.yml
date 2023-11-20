@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'The tag to emulate'
+        description: "The tag to emulate"
         required: true
         type: string
 

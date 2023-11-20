@@ -114,6 +114,7 @@
               editorconfig-checker.enable = true;
               markdownlint.enable = true;
               nixfmt.enable = true;
+              prettier.enable = true;
               rustfmt.enable = true;
               typos = {
                 enable = true;
