@@ -20,21 +20,44 @@
 
 ## Usage
 
-By default, running `ripsecrets` will recursively search source files in your current directory for secrets.
+### CLI
 
-```shell
-ripsecrets
+<!-- `$ printf "%s\n%b" '$ ripsecrets --help' "$(nix run .# -- --help 2>/dev/null)"` as console -->
+```console
+$ ripsecrets --help
+ripsecrets searches files and directories recursively for secret API keys.
+
+ripsecrets is primarily designed to be used as a pre-commit to prevent committing secrets into version control.
+
+For every secret it finds, ripsecrets will print out the file, line number, and the secret that was found.  If ripsecrets finds any secrets, it will exit with a non-zero status code.
+
+You can optionally pass a list of files and directories to search as arguments.  This is most commonly used to search files that are about to be committed to source control for accidentally included secrets.
+
+Usage: ripsecrets [OPTIONS] [Source files]...
+
+Arguments:
+  [Source files]...
+          Source files. Can be files or directories. Defaults to '.'
+
+Options:
+      --install-pre-commit
+          Install `ripsecrets` as a pre-commit hook automatically in git directory provided. Defaults to '.'
+
+      --strict-ignore
+          If you pass a path as an argument that's ignored by .secretsignore it will be scanned by default. --strict-ignore will override this behavior and not search the paths passed as arguments that are excluded by the .secretsignore file. This is useful when invoking secrets as a pre-commit
+
+      --only-matching
+          Print only the matched (non-empty) parts of a matching line, with each such part on a separate output line
+
+      --additional-pattern <ADDITIONAL_PATTERNS>
+          Additional regex patterns used to find secrets. If there is a matching group in the regex the matched group will be tested for randomness before being reported as a secret
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
 ```
-
-For every secret it finds, it will print out the file, line number, and the secret that was found. If it finds any secrets, it will exit with a non-zero status code.
-
-You can optionally pass a list of files and directories to search as arguments.
-
-```shell
-ripsecrets file1 file2 dir1
-```
-
-This is most commonly used to search files that are about to be committed to source control for accidentally included secrets.
 
 ### Installing ripsecrets as a pre-commit hook
 

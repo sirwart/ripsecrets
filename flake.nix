@@ -113,8 +113,12 @@
             hooks = {
               editorconfig-checker.enable = true;
               markdownlint.enable = true;
+              mdsh.enable = true;
               nixfmt.enable = true;
-              prettier.enable = true;
+              prettier = {
+                enable = true;
+                excludes = [ ".*.md" ];
+              };
               rustfmt.enable = true;
               typos = {
                 enable = true;
