@@ -1,6 +1,6 @@
+use regex::bytes::Regex;
 use std::collections::hash_map::HashMap;
 use std::collections::hash_set::HashSet;
-use regex::bytes::Regex;
 
 use memoize::memoize;
 
@@ -20,7 +20,11 @@ lazy_static::lazy_static! {
 /// This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
 /// be judged on how well it's able to distinguish random from non-random text.
 pub fn p_random(s: &[u8]) -> f64 {
-    let base = if RANDOM_STRING_REGEX.is_match(s) { 16.0 } else { 64.0 };
+    let base = if RANDOM_STRING_REGEX.is_match(s) {
+        16.0
+    } else {
+        64.0
+    };
     let mut p = p_random_distinct_values(s, base) * p_random_char_class(s, base);
     if base == 64.0 {
         // right now the bigrams are only calibrated for base64
@@ -55,11 +59,7 @@ fn p_random_char_class(s: &[u8], base: f64) -> f64 {
         return p_random_char_class_aux(s, b'0', b'9', 16.0);
     } else {
         let mut min_p = f64::INFINITY;
-        let char_classes = [
-            (b'0', b'9'),
-            (b'A', b'Z'),
-            (b'a', b'z'),
-        ];
+        let char_classes = [(b'0', b'9'), (b'A', b'Z'), (b'a', b'z')];
         for (min, max) in char_classes {
             let p = p_random_char_class_aux(s, min, max, base);
             if p < min_p {
@@ -127,7 +127,7 @@ fn num_possible_outcomes(num_values: usize, num_distinct_values: usize, base: us
     for i in 1..num_distinct_values {
         res *= (base - i) as f64;
     }
-    res *= num_distinct_configurations(num_values, num_distinct_values) as f64;
+    res *= num_distinct_configurations(num_values, num_distinct_values);
     return res;
 }
 

@@ -57,9 +57,7 @@ impl Matcher for IgnoringMatcher {
     fn find_at(&self, haystack: &[u8], at: usize) -> Result<Option<Match>, NoError> {
         let mut pos = at;
         while pos < haystack.len() {
-            let captures = self
-                .regex
-                .captures_at(haystack, pos);
+            let captures = self.regex.captures_at(haystack, pos);
             match captures {
                 None => return Ok(None),
                 Some(captures) => {
