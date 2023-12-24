@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702319896296,
+  "lastUpdate": 1703439408913,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -569,6 +569,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 431411248,
             "range": "± 1297125",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6b3d1aad368b49e2c5d660f5daff4c9a2650121a",
+          "message": "Add Cargo metadata (#82)\n\n* Add Cargo `license` metadata\r\n\r\nSee documentation at <https://doc.rust-lang.org/cargo/reference/manifest.html#the-license-and-license-file-fields>.\r\n\r\n* Add Cargo `keywords` metadata\r\n\r\nSee documentation at <https://doc.rust-lang.org/cargo/reference/manifest.html#the-keywords-field>.\r\n\r\n* Add Cargo `categories` metadata\r\n\r\nSee documentation at <https://doc.rust-lang.org/cargo/reference/manifest.html#the-categories-field>.\r\n\r\n* Add Cargo `readme` metadata\r\n\r\nSee documentation at <https://doc.rust-lang.org/cargo/reference/manifest.html#the-readme-field>.",
+          "timestamp": "2023-12-24T07:32:14-10:00",
+          "tree_id": "613a54309ea275677fb37f5daa0d8a5101a4e388",
+          "url": "https://github.com/sirwart/ripsecrets/commit/6b3d1aad368b49e2c5d660f5daff4c9a2650121a"
+        },
+        "date": 1703439408273,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 440290054,
+            "range": "± 2607856",
             "unit": "ns/iter"
           }
         ]
