@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-/// Prevent committing secret keys into your source code
+/// Prevent committing secret keys into your source code.
 #[derive(Parser, Debug)]
 #[clap(
     version,
@@ -12,8 +12,7 @@ It's primarily designed to be used as a pre-commit to prevent committing
 secrets into version control."
 )]
 struct Args {
-    /// Install `ripsecrets` as a pre-commit hook automatically in git directory provided. Defaults to
-    /// '.'
+    /// Install `ripsecrets` as a pre-commit hook automatically in git directory provided.
     #[clap(long = "install-pre-commit")]
     install_pre_commit: bool,
 
