@@ -7,6 +7,7 @@ repository = "https://github.com/sirwart/ripsecrets"
 homepage = "https://github.com/sirwart/ripsecrets"
 license = "MIT"
 keywords = ["security", "secret", "search"]
+categories = ["command-line-utilities", "text-processing"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
