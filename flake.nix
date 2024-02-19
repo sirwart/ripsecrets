@@ -43,7 +43,7 @@
           overlays = [ (import rust-overlay) ];
         };
 
-        buildInputs = [ ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+        nativeBuildInputs = [ ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
           # Additional darwin specific inputs can be set here
           pkgs.gcc
           pkgs.libiconv
@@ -51,11 +51,12 @@
 
         # Build *just* the cargo dependencies, so we can reuse
         # all of that work (e.g. via cachix) when running in CI
-        cargoArtifacts = craneLib.buildDepsOnly { inherit src buildInputs; };
+        cargoArtifacts =
+          craneLib.buildDepsOnly { inherit src nativeBuildInputs; };
 
         # Build ripsecrets itself, reusing the dependency artifacts from above.
         ripsecrets = craneLib.buildPackage {
-          inherit cargoArtifacts src buildInputs;
+          inherit cargoArtifacts src nativeBuildInputs;
           doCheck = false;
           meta = with pkgs.lib; {
             description =
@@ -94,7 +95,7 @@
           audit = craneLib.cargoAudit { inherit src advisory-db; };
 
           clippy = craneLib.cargoClippy {
-            inherit cargoArtifacts src buildInputs;
+            inherit cargoArtifacts src nativeBuildInputs;
             cargoClippyExtraArgs = "--all-targets -- --deny warnings";
           };
 
@@ -103,7 +104,7 @@
           fmt = craneLib.cargoFmt { inherit src; };
 
           nextest = craneLib.cargoNextest {
-            inherit cargoArtifacts src buildInputs;
+            inherit cargoArtifacts src nativeBuildInputs;
             partitions = 1;
             partitionType = "count";
           };
@@ -131,10 +132,9 @@
         devShells.default = pkgs.mkShell {
           inherit (self.checks.${system}.pre-commit) shellHook;
           inputsFrom = builtins.attrValues self.checks;
-          buildInputs = buildInputs
-            ++ (with pkgs; [ cargo clippy nixfmt rustc rustfmt ]);
-          nativeBuildInputs = with pkgs;
-            lib.optionals (system == "x86_64-linux") [ cargo-tarpaulin ];
+          packages = with pkgs; [ cargo clippy rustc ];
+          nativeBuildInputs = nativeBuildInputs ++ (with pkgs;
+            lib.optionals (system == "x86_64-linux") [ cargo-tarpaulin ]);
         };
       });
 }
