@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705364844281,
+  "lastUpdate": 1708798378925,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -629,6 +629,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 429440000,
             "range": "± 2516421",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ef54b36f79cf5323c83c031dd6936a7eefc0cec2",
+          "message": "Add `publish-crate` step to release workflow (#85)\n\nAddresses #77.\r\n\r\nThis new step requires the presence of a GitHub Actions Secret named CRATES_IO_API_TOKEN with access to publish the ripsecrets crate.\r\n\r\nDependencies were updated to avoid versions that have been yanked.",
+          "timestamp": "2024-02-24T10:08:13-08:00",
+          "tree_id": "9fb2bc56143ea02db15240d96bc849ba7aa00a67",
+          "url": "https://github.com/sirwart/ripsecrets/commit/ef54b36f79cf5323c83c031dd6936a7eefc0cec2"
+        },
+        "date": 1708798378177,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 389542762,
+            "range": "± 6189103",
             "unit": "ns/iter"
           }
         ]
