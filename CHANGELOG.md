@@ -1,3 +1,7 @@
+## 0.1.8 (2024-04-19)
+
+- Publish to crates.io
+
 ## 0.1.7 (2023-09-11)
 
 - Add detection for secrets in database connection strings and other URLs
