@@ -46,6 +46,7 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         "-----BEGIN RSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
         "-----BEGIN SSH2 ENCRYPTED PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
         "PuTTY-User-Key-File-2",
+        "s-s4t2(?:ud|af)-[abcdef0123456789]{64}", // intra42 client secret
         matcher::RANDOM_STRING_REGEX,
     ];
 }
