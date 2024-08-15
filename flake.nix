@@ -14,10 +14,7 @@
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     advisory-db = {
@@ -35,7 +32,7 @@
         (final: prev: { inherit (self.packages.${final.system}) ripsecrets; });
     } // flake-utils.lib.eachDefaultSystem (system:
       let
-        craneLib = crane.lib.${system};
+        craneLib = crane.mkLib nixpkgs.legacyPackages.${system};
         src = craneLib.cleanCargoSource ./.;
 
         pkgs = import nixpkgs {
@@ -43,7 +40,7 @@
           overlays = [ (import rust-overlay) ];
         };
 
-        nativeBuildInputs = [ ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+        nativeBuildInputs = pkgs.lib.optionals pkgs.stdenv.isDarwin [
           # Additional darwin specific inputs can be set here
           pkgs.gcc
           pkgs.libiconv
