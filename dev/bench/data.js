@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1715529469616,
+  "lastUpdate": 1723740176302,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -749,6 +749,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 401434657,
             "range": "± 4994902",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "23a79138d2a5bb441e68d7c7845bda3faef15f55",
+          "message": "Update Nix inputs (#87)\n\n* flake.lock: Update\r\n\r\nFlake lock file updates:\r\n\r\n• Updated input 'advisory-db':\r\n    'github:rustsec/advisory-db/99eb308ec59409c437eb5c4f364717705b09c7e8' (2024-02-18)\r\n  → 'github:rustsec/advisory-db/1d209d3f18c740f104380e988b5aa8eb360190d1' (2024-08-08)\r\n• Updated input 'crane':\r\n    'github:ipetkov/crane/2c653e4478476a52c6aa3ac0495e4dea7449ea0e' (2024-02-11)\r\n  → 'github:ipetkov/crane/4c6c77920b8d44cd6660c1621dea6b3fc4b4c4f4' (2024-08-06)\r\n• Updated input 'flake-utils':\r\n    'github:numtide/flake-utils/1ef2e671c3b0c19053962c07dbda38332dcebf26' (2024-01-15)\r\n  → 'github:numtide/flake-utils/b1d9ab70662946ef0850d488da1c9019f3a9752a' (2024-03-11)\r\n• Updated input 'nixpkgs':\r\n    'github:NixOS/nixpkgs/1d21cbff6b9e7816b5daf8840129b075bef617a3' (2024-02-19)\r\n  → 'github:NixOS/nixpkgs/4e7d996aa858660e3261b4834ab00415cfe9b0fe' (2024-08-12)\r\n• Updated input 'pre-commit-hooks':\r\n    'github:cachix/pre-commit-hooks.nix/5df5a70ad7575f6601d91f0efec95dd9bc619431' (2024-02-15)\r\n  → 'github:cachix/pre-commit-hooks.nix/c7012d0c18567c889b948781bc74a501e92275d1' (2024-08-09)\r\n• Removed input 'pre-commit-hooks/flake-utils'\r\n• Removed input 'pre-commit-hooks/flake-utils/systems'\r\n• Updated input 'pre-commit-hooks/gitignore':\r\n    'github:hercules-ci/gitignore.nix/43e1aa1308018f37118e34d3a9cb4f5e75dc11d5' (2023-12-29)\r\n  → 'github:hercules-ci/gitignore.nix/637db329424fd7e46cf4185293b9cc8c88c95394' (2024-02-28)\r\n• Updated input 'pre-commit-hooks/nixpkgs':\r\n    'github:NixOS/nixpkgs/eabe8d3eface69f5bb16c18f8662a702f50c20d5' (2024-01-09)\r\n  → 'github:NixOS/nixpkgs/9693852a2070b398ee123a329e68f0dab5526681' (2024-06-22)\r\n• Updated input 'pre-commit-hooks/nixpkgs-stable':\r\n    'github:NixOS/nixpkgs/3dc440faeee9e889fe2d1b4d25ad0f430d449356' (2024-01-10)\r\n  → 'github:NixOS/nixpkgs/194846768975b7ad2c4988bdb82572c00222c0d7' (2024-07-07)\r\n• Updated input 'rust-overlay':\r\n    'github:oxalica/rust-overlay/d500e370b26f9b14303cb39bf1509df0a920c8b0' (2024-02-18)\r\n  → 'github:oxalica/rust-overlay/65e3dc0fe079fe8df087cd38f1fe6836a0373aad' (2024-08-12)\r\n• Removed input 'rust-overlay/flake-utils'\r\n\r\n* Update deprecated crane usage in Nix flake",
+          "timestamp": "2024-08-15T09:38:13-07:00",
+          "tree_id": "3e2172359bccbccb1e7c65a66570096e518b87b8",
+          "url": "https://github.com/sirwart/ripsecrets/commit/23a79138d2a5bb441e68d7c7845bda3faef15f55"
+        },
+        "date": 1723740175908,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 404064668,
+            "range": "± 3445172",
             "unit": "ns/iter"
           }
         ]
