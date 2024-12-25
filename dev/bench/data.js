@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1723740176302,
+  "lastUpdate": 1735135760684,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -779,6 +779,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 404064668,
             "range": "± 3445172",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "rui@chenrui.dev",
+            "name": "Rui Chen",
+            "username": "chenrui333"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c36598db831cd20bf5fb935d7085b71c6e8f62a2",
+          "message": "feat: add shell completions support (#89)\n\nSigned-off-by: Rui Chen <rui@chenrui.dev>",
+          "timestamp": "2024-12-25T15:04:29+01:00",
+          "tree_id": "dd8a62aaf93752157972f271b1a5f2973880709e",
+          "url": "https://github.com/sirwart/ripsecrets/commit/c36598db831cd20bf5fb935d7085b71c6e8f62a2"
+        },
+        "date": 1735135759981,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 409868740,
+            "range": "± 1851072",
             "unit": "ns/iter"
           }
         ]
