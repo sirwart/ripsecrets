@@ -6,7 +6,7 @@ use std::error::Error;
 pub mod p_random;
 
 // We only flag random strings that occur on the same line as one of our four keywords
-pub const RANDOM_STRING_REGEX: &str = r#"(?:secret|token|key|password|Secret|SECRET|Token|TOKEN|Key|KEY|Password|PASSWORD)\w*['"]?]?\s*(?:=|:|:=)\s*['"` \t]?([A-Za-z0-9+/_\-.~=]{15,80})(?:['"` \t\n]|$)"#;
+pub const RANDOM_STRING_REGEX: &str = r#"(?i:key|token|secret|password)\w*["']?]?\s*(?:[:=]|:=|=>|<-)\s*[\t "'`]?([\w+./=~-]{15,80})(?:[\t\n "'`]|$)"#;
 
 #[derive(Clone, Debug)]
 pub struct IgnoringMatcher {
@@ -23,7 +23,7 @@ impl IgnoringMatcher {
     ) -> Result<IgnoringMatcher, Box<dyn Error>> {
         let regex = RegexBuilder::new(pattern).build()?;
         let ignore_regex =
-            RegexBuilder::new("[^\\n]*pragma: allowlist secret[^\\n]*(?:\\n|$)").build()?;
+            RegexBuilder::new(r"[^\n]*pragma: allowlist secret[^\n]*(?:\n|$)").build()?;
         Ok(IgnoringMatcher {
             regex,
             ignore_regex,

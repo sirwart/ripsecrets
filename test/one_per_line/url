@@ -1,1 +1,2 @@
 mysql://USERNAME:PASSWORD@example.com
+https://USERNAME:PASSWORD@sub.example.com:8080/path/to/page.html?query=value&sort=desc#section

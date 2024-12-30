@@ -21,32 +21,34 @@ mod matcher;
 
 fn predefined_secret_regexes() -> Vec<&'static str> {
     return vec![
-        "(?:r|s)k_live_[0-9a-zA-Z]{24}",            // stripe
-        "(?:AC[a-z0-9]{32}|SK[a-z0-9]{32})",        // twilio
-        "(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}", // github
-        "(?:^|\\W)eyJ[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*?", // jwt
-        "xox(?:a|b|p|o|s|r)-(?:\\d+-)+[a-z0-9]+",   // slack
-        "https://hooks\\.slack\\.com/services/T[a-zA-Z0-9_]+/B[a-zA-Z0-9_]+/[a-zA-Z0-9_]+", // slack webhooks
-        "//.+/:_authToken=[A-Za-z0-9-_]+",            // legacy npm
-        "npm_[A-Za-z0-9]{36}",                        // modern npm tokens
-        "AccountKey=[a-zA-Z0-9+/=]{88}",              // azure storage
-        "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}", // sendgrid
-        "[0-9a-z]{32}-us[0-9]{1,2}",                  // mailchimp
-        r"sq0csp-[0-9A-Za-z\\\-_]{43}",               // square
-        "AIzaSy[A-Za-z0-9-_]{33}",                    // gcp api key
-        "glpat-[A-Za-z0-9_/-]{20,}",                  // gitlab
-        "[A-Za-z]+://[A-Za-z0-9-_.~%]+:([A-Za-z0-9-_.~%]+)@[A-Za-z]+\\.[A-Za-z0-9]+", // URLs with passwords
-        // Private keys
-        "AGE-SECRET-KEY-[A-Z0-9]{59}", // age secret key
-        "-----BEGIN DSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN EC PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN OPENSSH PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN PGP PRIVATE KEY BLOCK-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN RSA PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
-        "-----BEGIN SSH2 ENCRYPTED PRIVATE KEY-----(?:$|[^-]{63}[^-]*-----END)",
+        r"[A-Za-z]+://\S{3,50}:(\S{3,50})@[\dA-Za-z#%&+./:=?_~-]+", // URL
+        r"\beyJ[\dA-Za-z=_-]+(?:\.[\dA-Za-z=_-]{3,}){1,4}",         // JWT/JWE
+        r"(?:gh[oprsu]|github_pat)_[\dA-Za-z_]{36}",                // GitHub
+        r"glpat-[\dA-Za-z_=-]{20,22}",                              // GitLab
+        r"[rs]k_live_[\dA-Za-z]{24,247}",                           // Stripe
+        r"sq0i[a-z]{2}-[\dA-Za-z_-]{22,43}",                        // Square
+        r"sq0c[a-z]{2}-[\dA-Za-z_-]{40,50}",                        // Square
+        r"EAAA[\dA-Za-z+=-]{60}",                                   // Square
+        r"AccountKey=[\d+/=A-Za-z]{88}",                            // Azure Storage
+        r"AIzaSy[\dA-Za-z_-]{33}",                                  // GCP API Key
+        r"npm_[\dA-Za-z]{36}",                                      // npm (modern)
+        r"//.+/:_authToken=[\dA-Za-z_-]+",                          // npm (legacy)
+        r"xox[aboprs]-(?:\d+-)+[\da-z]+",                           // Slack
+        r"https://hooks\.slack\.com/services/T[\dA-Za-z_]+/B[\dA-Za-z_]+/[\dA-Za-z_]+", // Slack Webhooks
+        r"SG\.[\dA-Za-z_-]{22}\.[\dA-Za-z_-]{43}",                                      // SendGrid
+        r"(?:AC|SK)[\da-z]{32}",                                                        // Twilio
+        r"[\da-f]{32}-us\d{1,2}",                                                       // Mailchimp
+        r"s-s4t2(?:af|ud)-[\da-f]{64}",                                                 // Intra42
         "PuTTY-User-Key-File-2",
-        "s-s4t2(?:ud|af)-[abcdef0123456789]{64}", // intra42 client secret
+        // Private keys
+        r"AGE-SECRET-KEY-1[\dA-Z]{58}", // age secret key
+        "-{5}BEGIN DSA PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN EC PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN OPENSSH PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN PGP PRIVATE KEY BLOCK-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN RSA PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
+        "-{5}BEGIN SSH2 ENCRYPTED PRIVATE KEY-{5}(?:$|[^-]{63,}-{5}END)",
         matcher::RANDOM_STRING_REGEX,
     ];
 }
