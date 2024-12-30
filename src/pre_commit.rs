@@ -56,7 +56,6 @@ pub fn install_pre_commit(repo_root: &Path) -> Result<(), Box<dyn Error>> {
             {
                 None => {
                     let mut file = OpenOptions::new()
-                        .write(true)
                         .append(true)
                         .open(pre_commit_fname)
                         .unwrap();
