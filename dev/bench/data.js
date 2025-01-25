@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1735135760684,
+  "lastUpdate": 1737846168077,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -809,6 +809,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 409868740,
             "range": "± 1851072",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "60151818+jack-zhang-ai@users.noreply.github.com",
+            "name": "Jack Zhang",
+            "username": "jack-zhang-ai"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "58427dbf73e747be713d504bae924b1689b86127",
+          "message": "Let secretsignore have the highest precedence (#93)\n\nCurrently, the secretsignore specified files are added with the lowest precedence, so if some other regular gitignore file happens to unignore some pattern (i.e. with !pattern), its not easy to have the ripsecrets ignore these files.\r\n\r\nThis PR changes the behavior so that the file patterns from the secretsignore have the highest precedence.",
+          "timestamp": "2025-01-25T14:57:05-08:00",
+          "tree_id": "1c508f83ff27dae8545a032575141d0880c5866f",
+          "url": "https://github.com/sirwart/ripsecrets/commit/58427dbf73e747be713d504bae924b1689b86127"
+        },
+        "date": 1737846166791,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 414386125,
+            "range": "± 3173521",
             "unit": "ns/iter"
           }
         ]
