@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1737846168077,
+  "lastUpdate": 1737851026084,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -839,6 +839,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 414386125,
             "range": "± 3173521",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9b43cd14a887b1727a8f13d03d99e4b3833f04f9",
+          "message": "Update Flake inputs to account for Cargo v4 (#92)\n\nAlso remove unnecessary `write` call found by Clippy",
+          "timestamp": "2025-01-25T16:19:40-08:00",
+          "tree_id": "168f444e52f9e47108a99c03c7ac60928c133b09",
+          "url": "https://github.com/sirwart/ripsecrets/commit/9b43cd14a887b1727a8f13d03d99e4b3833f04f9"
+        },
+        "date": 1737851025352,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 416211875,
+            "range": "± 4900398",
             "unit": "ns/iter"
           }
         ]
