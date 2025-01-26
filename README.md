@@ -22,31 +22,31 @@
 
 By default, running `ripsecrets` will recursively search source files in your current directory for secrets.
 
-```
-$ ripsecrets
+```sh
+ripsecrets
 ```
 
 For every secret it finds, it will print out the file, line number, and the secret that was found. If it finds any secrets, it will exit with a non-zero status code.
 
 You can optionally pass a list of files and directories to search as arguments.
 
-```
-$ ripsecrets file1 file2 dir1
+```sh
+ripsecrets file1 file2 dir1
 ```
 
-This is most commonly used to search files that are about to be committed to source control for accidentally included secrets. 
+This is most commonly used to search files that are about to be committed to source control for accidentally included secrets.
 
-### Installing ripsecrets as a pre-commit hook 
+### Installing ripsecrets as a pre-commit hook
 
 You can install `ripsecrets` as a pre-commit hook _automatically_ in your current git repository using the following command:
 
-```
-$ ripsecrets --install-pre-commit
+```sh
+ripsecrets --install-pre-commit
 ```
 
 If you would like to install `ripsecrets` _manually_, you can add the following command to your `pre-commit` script:
 
-```
+```sh
 ripsecrets --strict-ignore `git diff --cached --name-only --diff-filter=ACM`
 ```
 
@@ -58,8 +58,8 @@ Passing `--strict-ignore` ensures that your `.secretsignore` file is respected w
 
 [`ripsecrets`](https://formulae.brew.sh/formula/ripsecrets) is available in Homebrew for macOS and Linux:
 
-```
-$ brew install ripsecrets
+```sh
+brew install ripsecrets
 ```
 
 ### Pre-built
@@ -70,15 +70,16 @@ You can download a prebuilt binary for the latest release from the [releases](ht
 
 Alternatively, if you have [Rust](https://www.rust-lang.org/tools/install) and Cargo installed, you can run:
 
-```
-$ cargo install --git https://github.com/sirwart/ripsecrets --branch main
+```sh
+cargo install --git https://github.com/sirwart/ripsecrets --branch main
 ```
 
 ### Nix Flake
 
 Assuming you have enabled [Flakes](https://nixos.wiki/wiki/Flakes) in your Nix configuration, you can build the `ripsecrets` binary and make it available in your default Nix profile by running:
-```
-$ nix profile install github:sirwart/ripsecrets
+
+```sh
+nix profile install github:sirwart/ripsecrets
 ```
 
 ### Using `pre-commit`
@@ -88,11 +89,11 @@ Add the following to your `.pre-commit-config.yaml` file:
 
 ```yaml
 repos:
--   repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.8  # Use latest tag on GitHub
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.8 # Use latest tag on GitHub
     hooks:
-    -   id: ripsecrets
-        # uncomment to check additional patterns 
+      - id: ripsecrets
+        # uncomment to check additional patterns
         # args:
         # - --additional-pattern 'mytoken*'
         # - --additional-pattern 'mykey*'
@@ -102,20 +103,20 @@ There are two hooks available:
 
 - `ripsecrets` (Recommended)
 
-   pre-commit will set up a Rust environment from scratch to compile and run ripsecrets.
-   See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more information.
+  pre-commit will set up a Rust environment from scratch to compile and run ripsecrets.
+  See the [pre-commit rust plugin docs](https://pre-commit.com/#rust) for more information.
 
 - `ripsecrets-system`
 
-   pre-commit will look for `ripsecrets` on your `PATH`.
-   This hook requires you to install ripsecrets separately, e.g., with your package manager or [a prebuilt binary release](https://github.com/sirwart/ripsecrets/releases).
-   It is only recommended if you are happy making all repository users install `ripsecrets` manually.
+  pre-commit will look for `ripsecrets` on your `PATH`.
+  This hook requires you to install ripsecrets separately, e.g., with your package manager or [a prebuilt binary release](https://github.com/sirwart/ripsecrets/releases).
+  It is only recommended if you are happy making all repository users install `ripsecrets` manually.
 
 ## Ignoring secrets
 
 `ripsecrets` will respect your .gitignore files by default, but there might still be files you want to exclude from being scanned for secrets. To do that, you can create a .secretsignore file, which supports similar syntax to a .gitignore file for ignoring files. In addition to excluding files, it also supports a `[secrets]` section that allows ignoring individual secrets.
 
-```
+```sh
 test/*
 dummy
 
@@ -125,7 +126,7 @@ pAznMW3DsrnVJ5TDWwBVCA
 
 In addition to the .secretsignore file, `ripsecrets` is compatible with `detect-secrets` style allowlist comments on the same line as the detected secret:
 
-```
+```sh
 test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 ```
 
@@ -133,17 +134,17 @@ test_secret = "pAznMW3DsrnVJ5TDWwBVCA" # pragma: allowlist secret
 
 In some cases, you may have a custom secret that's not recognized by `ripsecrets`. To detect these, call `ripsecrets` with the `--additional-pattern` argument:
 
-```
+```sh
 ripsecrets --additional-pattern my-secret-\*
 ```
 
-Any matching groups in the regex will be tested for randomness before being reported as a secret. If you do not want this behavior, use non-matching groups in your regex. For example instead of `(foo|bar)` use `(?:foo|bar)`.
+Any capturing groups in the regex will be tested for randomness before being reported as a secret. If you do not want this behavior, use non-capturing groups in your regex. For example instead of `(foo|bar)` use `(?:foo|bar)`.
 
 If the secret pattern you're trying to detect is a publicly documented secret pattern, please open [an issue](https://github.com/sirwart/ripsecrets/issues/new).
 
 ## How it works
 
- `ripsecrets` has 2 types of secrets that it can find in code:
+`ripsecrets` has 2 types of secrets that it can find in code:
 
 1. Secrets with known patterns that can be matched. API keys from services like Stripe and Slack have a predefined prefix that identifies them as API keys and can be found via regular expressions very reliably. You can see the current list of known secrets matched by `ripsecrets` [here](https://github.com/sirwart/ripsecrets/blob/main/src/lib.rs#L22).
 
@@ -173,8 +174,8 @@ Most of the time, your pre-commit will be running on a small number of files, so
 
 ## Running benchmarks
 
-```shell
-$ cargo bench
+```sh
+cargo bench
 ```
 
 The results will then be viewable at `target/criterion/report/index.html`.
