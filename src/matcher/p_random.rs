@@ -5,7 +5,8 @@ use std::collections::hash_set::HashSet;
 use memoize::memoize;
 
 lazy_static::lazy_static! {
-    static ref RANDOM_STRING_REGEX: Regex = Regex::new("^[0-9a-fA-F]{16,}$").unwrap();
+    static ref HEX_STRING_REGEX: Regex = Regex::new("^[0-9a-fA-F]{16,}$").unwrap();
+    static ref CAP_AND_NUMBERS_REGEX: Regex = Regex::new("^[0-9A-Z]{16,}$").unwrap();
 }
 
 /// When we get a potential secret that doesn't match any known secret patterns, we need to make some determination of
@@ -20,8 +21,10 @@ lazy_static::lazy_static! {
 /// This math is probably not perfect, but it should be in the right ballpark and it's ultimately a heuristic so it should
 /// be judged on how well it's able to distinguish random from non-random text.
 pub fn p_random(s: &[u8]) -> f64 {
-    let base = if RANDOM_STRING_REGEX.is_match(s) {
+    let base = if HEX_STRING_REGEX.is_match(s) {
         16.0
+    } else if CAP_AND_NUMBERS_REGEX.is_match(s) {
+        36.0
     } else {
         64.0
     };
@@ -59,9 +62,16 @@ fn p_random_char_class(s: &[u8], base: f64) -> f64 {
         return p_random_char_class_aux(s, b'0', b'9', 16.0);
     } else {
         let mut min_p = f64::INFINITY;
-        let char_classes = [(b'0', b'9'), (b'A', b'Z'), (b'a', b'z')];
+
+        let char_classes_36: &[(u8, u8)] = &[(b'0', b'9'), (b'A', b'Z')];
+        let char_classes_64: &[(u8, u8)] = &[(b'0', b'9'), (b'A', b'Z'), (b'a', b'z')];
+        let char_classes = if base == 36.0 {
+            char_classes_36
+        } else {
+            char_classes_64
+        };
         for (min, max) in char_classes {
-            let p = p_random_char_class_aux(s, min, max, base);
+            let p = p_random_char_class_aux(s, *min, *max, base);
             if p < min_p {
                 min_p = p;
             }
