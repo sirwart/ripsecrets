@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1737851700723,
+  "lastUpdate": 1741927673910,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -899,6 +899,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 17553022790,
             "range": "± 65346873",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "552bd04b501cbf1465fc5647a0f720744e385780",
+          "message": "Use proper character class for AWS secrets (fixes #94)",
+          "timestamp": "2025-03-13T21:41:43-07:00",
+          "tree_id": "63e69d5a2e6a4e12a54537cfbf1bfc9681629e21",
+          "url": "https://github.com/sirwart/ripsecrets/commit/552bd04b501cbf1465fc5647a0f720744e385780"
+        },
+        "date": 1741927672956,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 18225328334,
+            "range": "± 297608573",
             "unit": "ns/iter"
           }
         ]
