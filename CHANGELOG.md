@@ -1,3 +1,10 @@
+## 0.1.9 (2025-04-22)
+
+- Add intra42 and Square secret matcher
+- Add shell completions support
+- Fewer false negatives for AWS secrets
+- More intuitive precedence for .secretsignore file
+
 ## 0.1.8 (2024-04-20)
 
 - Publish to crates.io
