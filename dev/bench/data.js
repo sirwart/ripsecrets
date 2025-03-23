@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1741927673910,
+  "lastUpdate": 1742705740251,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -929,6 +929,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 18225328334,
             "range": "± 297608573",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "d251faaa503dcff63cf2b66182c5ec25e2bbb8da",
+          "message": "cargo lock versiom update",
+          "timestamp": "2025-03-22T21:49:53-07:00",
+          "tree_id": "b76b122b9bda00e2ca2e03b649d284064d442456",
+          "url": "https://github.com/sirwart/ripsecrets/commit/d251faaa503dcff63cf2b66182c5ec25e2bbb8da"
+        },
+        "date": 1742705739031,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 18408285398,
+            "range": "± 655688715",
             "unit": "ns/iter"
           }
         ]
