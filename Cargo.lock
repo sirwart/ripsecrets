@@ -669,7 +669,7 @@ checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
 
 [[package]]
 name = "ripsecrets"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "clap 4.5.23",
  "clap_complete",
