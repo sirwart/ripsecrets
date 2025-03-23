@@ -1,4 +1,4 @@
-## 0.1.9 (2025-03-22)
+## 0.1.9 (2025-03-23)
 
 - Add intra42 and Square secret matcher
 - Add shell completions support
