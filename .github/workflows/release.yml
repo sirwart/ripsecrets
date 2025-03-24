@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'The tag to emulate'
+        description: "The tag to emulate"
         required: true
         type: string
 
@@ -61,7 +61,7 @@ jobs:
         run: nix build .#ripsecrets-oci
 
       - name: Temporarily save the OCI archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: oci-tar-gz-${{ needs.determine-tag.outputs.version }}
           path: result
@@ -110,5 +110,4 @@ jobs:
       - name: Publish
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
-        run:
-          nix develop --command cargo publish
+        run: nix develop --command cargo publish
