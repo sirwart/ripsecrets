@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1742748843582,
+  "lastUpdate": 1743137724447,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -989,6 +989,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 18767488987,
             "range": "± 413653085",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "committer": {
+            "email": "ohohvi@gmail.com",
+            "name": "Brian Smith",
+            "username": "sirwart"
+          },
+          "distinct": true,
+          "id": "1c4d191969e02b419b4d47bf10d1b37dbb65cb63",
+          "message": "Don't mark passwords in URL under 8 characters as secrets (fixes #98)",
+          "timestamp": "2025-03-27T21:49:44-07:00",
+          "tree_id": "dcf6162381da424f5adb179e0a86e83cf0737135",
+          "url": "https://github.com/sirwart/ripsecrets/commit/1c4d191969e02b419b4d47bf10d1b37dbb65cb63"
+        },
+        "date": 1743137723962,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 19019910602,
+            "range": "± 844594963",
             "unit": "ns/iter"
           }
         ]
