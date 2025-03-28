@@ -8,3 +8,5 @@ WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW
 req.POST = {"head_long": "v999", "url": "http://example.com", "user": "wrong@example.com"}
 http://public:secret@example.com/1
 project_key = PROJECT_NAME_ALIAS
+postgresql://user:user@no_connection/no_db
+postgresql://user:ReTllpYQYfIZu2Jnf2lAPFjD@no_connection/no_db // secret is in .secretsignore

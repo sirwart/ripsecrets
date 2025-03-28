@@ -21,7 +21,7 @@ mod matcher;
 
 fn predefined_secret_regexes() -> Vec<&'static str> {
     return vec![
-        r"[A-Za-z]+://\S{3,50}:(\S{3,50})@[\dA-Za-z#%&+./:=?_~-]+", // URL
+        r"[A-Za-z]+://\S{3,50}:(\S{8,50})@[\dA-Za-z#%&+./:=?_~-]+", // URL
         r"\beyJ[\dA-Za-z=_-]+(?:\.[\dA-Za-z=_-]{3,}){1,4}",         // JWT/JWE
         r"(?:gh[oprsu]|github_pat)_[\dA-Za-z_]{36}",                // GitHub
         r"glpat-[\dA-Za-z_=-]{20,22}",                              // GitLab
