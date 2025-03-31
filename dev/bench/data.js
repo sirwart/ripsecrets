@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1743137724447,
+  "lastUpdate": 1743397184935,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -1019,6 +1019,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 19019910602,
             "range": "± 844594963",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "suzuki-shunsuke@users.noreply.github.com",
+            "name": "Shunsuke Suzuki",
+            "username": "suzuki-shunsuke"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1c2aea7529ec09064342bf99675fef4c9370bb6a",
+          "message": "chore: update upload-artifact to v4 (#96)\n\nupload-artifact v3 was deprecated.",
+          "timestamp": "2025-03-30T21:54:07-07:00",
+          "tree_id": "fefb26ed286b3715729a0a81801be67f7dbc0857",
+          "url": "https://github.com/sirwart/ripsecrets/commit/1c2aea7529ec09064342bf99675fef4c9370bb6a"
+        },
+        "date": 1743397184431,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 18432908032,
+            "range": "± 199492273",
             "unit": "ns/iter"
           }
         ]
