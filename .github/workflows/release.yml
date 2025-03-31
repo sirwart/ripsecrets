@@ -104,6 +104,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Install and configure Nix
         uses: cachix/install-nix-action@v25
 
