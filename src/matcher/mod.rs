@@ -6,7 +6,7 @@ use std::error::Error;
 pub mod p_random;
 
 // We only flag random strings that occur on the same line as one of our four keywords
-pub const RANDOM_STRING_REGEX: &str = r#"(?i:key|token|secret|password)\w*["']?]?\s*(?:[:=]|:=|=>|<-)\s*[\t "'`]?([\w+./=~-]{15,80})(?:[\t\n "'`]|$)"#;
+pub const RANDOM_STRING_REGEX: &str = r#"(?i:key|token|secret|password)\w*["']?]?\s*(?:[:=]|:=|=>|<-|>)\s*[\t "'`]?([\w+./=~\-\\`^]{15,90})(?:[\t\n "'`]|</|$)"#;
 
 #[derive(Clone, Debug)]
 pub struct IgnoringMatcher {

@@ -34,6 +34,7 @@ fn predefined_secret_regexes() -> Vec<&'static str> {
         r"npm_[\dA-Za-z]{36}",                                      // npm (modern)
         r"//.+/:_authToken=[\dA-Za-z_-]+",                          // npm (legacy)
         r"xox[aboprs]-(?:\d+-)+[\da-z]+",                           // Slack
+        r"<master>\{[\dA-Za-z]+\\}</master>",                       // Maven
         r"https://hooks\.slack\.com/services/T[\dA-Za-z_]+/B[\dA-Za-z_]+/[\dA-Za-z_]+", // Slack Webhooks
         r"SG\.[\dA-Za-z_-]{22}\.[\dA-Za-z_-]{43}",                                      // SendGrid
         r"(?:AC|SK)[\da-z]{32}",                                                        // Twilio
