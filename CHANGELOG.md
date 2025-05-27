@@ -1,3 +1,9 @@
+## 0.1.10 (2025-05-26)
+
+- Increased max random string length to catch terraform secrets
+- More characters are now allowed in random strings
+- Support for detecting maven secrets
+
 ## 0.1.9 (2025-03-23)
 
 - Add intra42 and Square secret matcher
