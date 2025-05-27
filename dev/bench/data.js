@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748314349631,
+  "lastUpdate": 1748358913366,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -1139,6 +1139,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 19489274383,
             "range": "± 93545165",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "jamison@lahman.dev",
+            "name": "Jamison Lahman",
+            "username": "jmelahman"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4bbe179f5b83e6a0047509de795aea5f686f15f0",
+          "message": "fix: sync Cargo.toml and Cargo.lock (#100)",
+          "timestamp": "2025-05-27T08:09:07-07:00",
+          "tree_id": "0570d94c989e7ede7341e5464a6f87d99ed22abb",
+          "url": "https://github.com/sirwart/ripsecrets/commit/4bbe179f5b83e6a0047509de795aea5f686f15f0"
+        },
+        "date": 1748358912324,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 19588942638,
+            "range": "± 78061039",
             "unit": "ns/iter"
           }
         ]
