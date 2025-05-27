@@ -1,3 +1,7 @@
+## 0.1.11 (2025-05-26)
+
+- Fix Cargo.lock file
+
 ## 0.1.10 (2025-05-26)
 
 - Increased max random string length to catch terraform secrets
