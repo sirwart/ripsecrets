@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748364409729,
+  "lastUpdate": 1750861854621,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -1199,6 +1199,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 19550659712,
             "range": "± 410064691",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dcfda41b02c2e7abb1b48010fd142202b9946599",
+          "message": "Remove `refs/tags/` prefix from tag in release workflow (#102)",
+          "timestamp": "2025-06-25T07:25:01-07:00",
+          "tree_id": "286e8c79dc98f6b7a7cbdcc4c485ff5a8003808b",
+          "url": "https://github.com/sirwart/ripsecrets/commit/dcfda41b02c2e7abb1b48010fd142202b9946599"
+        },
+        "date": 1750861853685,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 19274790216,
+            "range": "± 107242769",
             "unit": "ns/iter"
           }
         ]
