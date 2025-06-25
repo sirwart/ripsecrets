@@ -26,7 +26,7 @@ jobs:
         id: on-push
         if: ${{ github.event_name == 'push' }}
         run: |
-          echo "tag=${{ github.ref }}" >> $GITHUB_OUTPUT
+          echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
       - name: Use workflow input
         id: on-workflow
