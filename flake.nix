@@ -102,7 +102,7 @@
             src = ./.;
             hooks = {
               editorconfig-checker.enable = true;
-              nixfmt.enable = true;
+              nixfmt-rfc-style.enable = true;
               rustfmt.enable = true;
               typos = {
                 enable = true;
