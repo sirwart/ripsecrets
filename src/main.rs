@@ -28,7 +28,7 @@ fn main() {
         RunResult::NoSecretsFound => process::exit(0),
         RunResult::SecretsFound => process::exit(1),
         RunResult::Error(e) => {
-            eprintln!("Error: {}", e);
+            eprintln!("Error: {e}");
             process::exit(2)
         }
     }
@@ -49,8 +49,7 @@ fn run() -> RunResult {
             "--only-matching"
         };
         return RunResult::Error(format!(
-            "{} is not a valid option when installing pre-commits. Use --install-pre-commit alone",
-            option
+            "{option} is not a valid option when installing pre-commits. Use --install-pre-commit alone"
         ));
     }
 
