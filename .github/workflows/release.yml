@@ -82,7 +82,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Retrieve OCI archive
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v5
         with:
           name: oci-tar-gz-${{ needs.determine-tag.outputs.version }}
           path: .
