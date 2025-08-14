@@ -23,7 +23,9 @@ jobs:
         run: find benches -name "*.md" -delete
 
       - name: Install nix
-        uses: cachix/install-nix-action@v18
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run benchmark
         run: |
