@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1755130208282,
+  "lastUpdate": 1755141852770,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -1259,6 +1259,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 19315157628,
             "range": "± 150208401",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "416e9d04d6ba8941fc3106bf986b6c8aa875767e",
+          "message": "Bump actions/checkout from 3 to 5 (#109)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 3 to 5.\n- [Release notes](https://github.com/actions/checkout/releases)\n- [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)\n- [Commits](https://github.com/actions/checkout/compare/v3...v5)\n\n---\nupdated-dependencies:\n- dependency-name: actions/checkout\n  dependency-version: '5'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-08-13T20:18:16-07:00",
+          "tree_id": "496a82d3b5e99ddf09f9a03ebd993ea3fadcbe5b",
+          "url": "https://github.com/sirwart/ripsecrets/commit/416e9d04d6ba8941fc3106bf986b6c8aa875767e"
+        },
+        "date": 1755141851754,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 19551217159,
+            "range": "± 114817437",
             "unit": "ns/iter"
           }
         ]
