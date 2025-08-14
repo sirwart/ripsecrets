@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750861854621,
+  "lastUpdate": 1755130208282,
   "repoUrl": "https://github.com/sirwart/ripsecrets",
   "entries": {
     "Benchmark": [
@@ -1229,6 +1229,36 @@ window.BENCHMARK_DATA = {
             "name": "Find secrets in getsentry/sentry/find_secrets function",
             "value": 19274790216,
             "range": "± 107242769",
+            "unit": "ns/iter"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "git@lafreniere.xyz",
+            "name": "Joseph LaFreniere",
+            "username": "lafrenierejm"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b2e8204892771212384decb11c85b6f55e3d4d2e",
+          "message": "Enable Dependabot for Cargo and GitHub Actions (#103)\n\n* Enable Dependabot for Cargo and GitHub Actions\n\n* Limit Dependabot's Cargo PRs to security fixes\n\nFrom <https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file>:\n\n> Dependabot default behavior:\n>\n> - If five pull requests with version updates are open, no further pull requests are raised until some of those open requests are merged or closed.\n> - Security updates have a separate, internal limit of ten open pull requests which cannot be changed.\n>\n> When open-pull-requests-limit is defined:\n>\n> - Dependabot opens pull requests up to the defined integer value.\n> - You can temporarily disable version updates for a package manager by setting this option to zero…",
+          "timestamp": "2025-08-13T17:04:18-07:00",
+          "tree_id": "e1a76ab93c8ac006320cc0539fa81152c9e2561b",
+          "url": "https://github.com/sirwart/ripsecrets/commit/b2e8204892771212384decb11c85b6f55e3d4d2e"
+        },
+        "date": 1755130207828,
+        "tool": "cargo",
+        "benches": [
+          {
+            "name": "Find secrets in getsentry/sentry/find_secrets function",
+            "value": 19315157628,
+            "range": "± 150208401",
             "unit": "ns/iter"
           }
         ]
