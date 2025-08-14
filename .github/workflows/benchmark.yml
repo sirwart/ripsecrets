@@ -31,7 +31,7 @@ jobs:
           cargo bench --bench find_secrets -- --output-format bencher >benchmark.txt 2>/dev/null
 
       - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1.14.0
+        uses: benchmark-action/github-action-benchmark@v1.20.4
         with:
           tool: cargo
           output-file-path: benchmark.txt
