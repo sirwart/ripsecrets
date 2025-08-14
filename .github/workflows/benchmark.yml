@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Run and publish benchmarks
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Clone getsentry/sentry
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           repository: getsentry/sentry
           ref: f5d9a4c3e403d3419dea9b0005408d34d30c6015
