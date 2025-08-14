@@ -8,7 +8,7 @@ jobs:
   build-and-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v18
       - run: nix build
       - run: nix flake check --no-build --show-trace
