@@ -141,7 +141,7 @@ pub fn find_secrets(
                     return ignore::WalkState::Continue;
                 }
                 Ok(dent) => {
-                    if !dent.file_type().map_or(false, |ft| ft.is_file()) {
+                    if !dent.file_type().is_some_and(|ft| ft.is_file()) {
                         return ignore::WalkState::Continue;
                     }
                     dent
