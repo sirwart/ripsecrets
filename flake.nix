@@ -130,16 +130,10 @@
         };
 
         # `nix develop`
-        devShells.default = pkgs.mkShell {
+        devShells.default = craneLib.devShell {
           inherit (self.checks.${system}.pre-commit) shellHook;
           inputsFrom = builtins.attrValues self.checks;
-          packages = with pkgs; [
-            cargo
-            clippy
-            rustc
-          ];
-          nativeBuildInputs =
-            nativeBuildInputs ++ (with pkgs; lib.optionals (system == "x86_64-linux") [ cargo-tarpaulin ]);
+          buildInputs = self.checks.${system}.pre-commit.enabledPackages;
         };
       }
     );
