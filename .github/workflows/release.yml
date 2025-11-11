@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Install and configure Nix
-        uses: cachix/install-nix-action@v25
+        uses: cachix/install-nix-action@v31
 
       - name: Build the OCI tar.gz
         run: nix build .#ripsecrets-oci
@@ -109,7 +109,7 @@ jobs:
           persist-credentials: false
 
       - name: Install and configure Nix
-        uses: cachix/install-nix-action@v25
+        uses: cachix/install-nix-action@v31
 
       - name: Publish
         env:

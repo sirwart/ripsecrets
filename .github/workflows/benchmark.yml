@@ -23,7 +23,7 @@ jobs:
         run: find benches -name "*.md" -delete
 
       - name: Install nix
-        uses: cachix/install-nix-action@v18
+        uses: cachix/install-nix-action@v31
 
       - name: Run benchmark
         run: |
