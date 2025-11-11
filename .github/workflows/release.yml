@@ -61,7 +61,7 @@ jobs:
         run: nix build .#ripsecrets-oci
 
       - name: Temporarily save the OCI archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: oci-tar-gz-${{ needs.determine-tag.outputs.version }}
           path: result
