@@ -1,6 +1,5 @@
 {
-  description =
-    "A command-line tool to prevent committing secret keys into your source code";
+  description = "A command-line tool to prevent committing secret keys into your source code";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
@@ -17,12 +16,21 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
-  outputs = { self, nixpkgs, crane, flake-utils, rust-overlay, advisory-db
-    , pre-commit-hooks }:
+  outputs =
     {
-      overlays.default =
-        (final: prev: { inherit (self.packages.${final.system}) ripsecrets; });
-    } // flake-utils.lib.eachDefaultSystem (system:
+      self,
+      nixpkgs,
+      crane,
+      flake-utils,
+      rust-overlay,
+      advisory-db,
+      pre-commit-hooks,
+    }:
+    {
+      overlays.default = (final: prev: { inherit (self.packages.${final.system}) ripsecrets; });
+    }
+    // flake-utils.lib.eachDefaultSystem (
+      system:
       let
         craneLib = crane.mkLib nixpkgs.legacyPackages.${system};
         src = craneLib.cleanCargoSource ./.;
@@ -40,16 +48,14 @@
 
         # Build *just* the cargo dependencies, so we can reuse
         # all of that work (e.g. via cachix) when running in CI
-        cargoArtifacts =
-          craneLib.buildDepsOnly { inherit src nativeBuildInputs; };
+        cargoArtifacts = craneLib.buildDepsOnly { inherit src nativeBuildInputs; };
 
         # Build ripsecrets itself, reusing the dependency artifacts from above.
         ripsecrets = craneLib.buildPackage {
           inherit cargoArtifacts src nativeBuildInputs;
           doCheck = false;
           meta = with pkgs.lib; {
-            description =
-              "A command-line tool to prevent committing secret keys into your source code";
+            description = "A command-line tool to prevent committing secret keys into your source code";
             homepage = "https://github.com/sirwart/ripsecrets";
             maintainers = [ maintainers.lafrenierejm ];
             license = licenses.mit;
@@ -57,7 +63,8 @@
         };
 
         pre-commit = pre-commit-hooks.lib."${system}".run;
-      in rec {
+      in
+      rec {
         packages = flake-utils.lib.flattenTree {
           # `nix build .#ripsecrets`
           inherit ripsecrets;
@@ -71,7 +78,9 @@
             config = {
               Entrypoint = [ "${ripsecrets}/bin/ripsecrets" ];
               WorkingDir = "/data";
-              Volumes = { "/data" = { }; };
+              Volumes = {
+                "/data" = { };
+              };
             };
           };
         };
@@ -102,28 +111,30 @@
             src = ./.;
             hooks = {
               editorconfig-checker.enable = true;
-              nixfmt.enable = true;
+              nixfmt-rfc-style.enable = true;
               rustfmt.enable = true;
               typos = {
                 enable = true;
-                excludes = [ "^test/one_per_file/.*" "^test/one_per_line/.*" ];
+                excludes = [
+                  "^test/one_per_file/.*"
+                  "^test/one_per_line/.*"
+                ];
               };
             };
           };
-        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+        }
+        // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
           # NB: cargo-tarpaulin only supports x86_64 systems
           # Check code coverage (note: this will not upload coverage anywhere)
-          ripsecrets-coverage =
-            craneLib.cargoTarpaulin { inherit cargoArtifacts src; };
+          ripsecrets-coverage = craneLib.cargoTarpaulin { inherit cargoArtifacts src; };
         };
 
         # `nix develop`
-        devShells.default = pkgs.mkShell {
+        devShells.default = craneLib.devShell {
           inherit (self.checks.${system}.pre-commit) shellHook;
           inputsFrom = builtins.attrValues self.checks;
-          packages = with pkgs; [ cargo clippy rustc ];
-          nativeBuildInputs = nativeBuildInputs ++ (with pkgs;
-            lib.optionals (system == "x86_64-linux") [ cargo-tarpaulin ]);
+          buildInputs = self.checks.${system}.pre-commit.enabledPackages;
         };
-      });
+      }
+    );
 }
